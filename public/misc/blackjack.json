@@ -1,0 +1,75 @@
+{
+    "newDeckLimit": 26,
+    "deck": {
+        "back": "cards/back",
+        "textures": {
+            "clubs": {
+                "a": "cards/clubs/A",
+                "2": "cards/clubs/2",
+                "3": "cards/clubs/3",
+                "4": "cards/clubs/4",
+                "5": "cards/clubs/5",
+                "6": "cards/clubs/6",
+                "7": "cards/clubs/7",
+                "8": "cards/clubs/8",
+                "9": "cards/clubs/9",
+                "10": "cards/clubs/10",
+                "j": "cards/clubs/J",
+                "q": "cards/clubs/Q",
+                "k": "cards/clubs/K"
+            },
+            "spades": {
+                "a": "cards/spades/A",
+                "2": "cards/spades/2",
+                "3": "cards/spades/3",
+                "4": "cards/spades/4",
+                "5": "cards/spades/5",
+                "6": "cards/spades/6",
+                "7": "cards/spades/7",
+                "8": "cards/spades/8",
+                "9": "cards/spades/9",
+                "10": "cards/spades/10",
+                "j": "cards/spades/J",
+                "q": "cards/spades/Q",
+                "k": "cards/spades/K"
+            },
+            "hearts": {
+                "a": "cards/hearts/A",
+                "2": "cards/hearts/2",
+                "3": "cards/hearts/3",
+                "4": "cards/hearts/4",
+                "5": "cards/hearts/5",
+                "6": "cards/hearts/6",
+                "7": "cards/hearts/7",
+                "8": "cards/hearts/8",
+                "9": "cards/hearts/9",
+                "10": "cards/hearts/10",
+                "j": "cards/hearts/J",
+                "q": "cards/hearts/Q",
+                "k": "cards/hearts/K"
+            },
+            "diamonds": {
+                "a": "cards/diamonds/A",
+                "2": "cards/diamonds/2",
+                "3": "cards/diamonds/3",
+                "4": "cards/diamonds/4",
+                "5": "cards/diamonds/5",
+                "6": "cards/diamonds/6",
+                "7": "cards/diamonds/7",
+                "8": "cards/diamonds/8",
+                "9": "cards/diamonds/9",
+                "10": "cards/diamonds/10",
+                "j": "cards/diamonds/J",
+                "q": "cards/diamonds/Q",
+                "k": "cards/diamonds/K"
+            }
+        }
+    },
+    "chips": {
+        "chips/chip_0": 1,
+        "chips/chip_1": 2,
+        "chips/chip_2": 5,
+        "chips/chip_3": 10,
+        "chips/chip_4": 20
+    }
+}

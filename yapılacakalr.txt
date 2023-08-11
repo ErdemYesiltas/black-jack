@@ -1,0 +1,4 @@
+* pixi stats ekle
+* butonlara tint ekle
+* componentlere destroy ekle
+* bet paneline clean bet butonu ekle

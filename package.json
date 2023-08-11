@@ -1,0 +1,36 @@
+{
+  "name": "black-jack",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "rollup --config rollup.config.dev.mjs",
+    "build": "rollup --config rollup.config.dist.mjs",
+    "watch": "rollup --watch --config rollup.config.dev.mjs",
+    "serve": "live-server ./public"
+  },
+  "keywords": [
+    "blackjack",
+    "card",
+    "game",
+    "casino"
+  ],
+  "author": "Erdem Yesiltas <erdemyesiltas@hotmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@tweenjs/tween.js": "^21.0.0",
+    "howler": "^2.2.3",
+    "pixi-spine": "^4.0.4",
+    "pixi.js": "^7.2.4"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.3",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-terser": "^0.4.3",
+    "@rollup/plugin-typescript": "^11.1.2",
+    "eslint": "^8.46.0",
+    "live-server": "^1.2.2",
+    "pixi-stats": "^1.2.2",
+    "rollup": "^3.27.2",
+    "tslib": "^2.6.1",
+    "typescript": "^5.1.6"
+  }
+}

@@ -1,0 +1,282 @@
+{
+    "hello": true,
+    "backgroundColor": "#1a774b",
+    "debug": true,
+    "width": 1280,
+    "height": 720,
+    "safeWidth": 800,
+    "safeHeight": 600,
+    "align": 4,
+    "scenes": [
+        {
+            "key": "LoadingScene",
+            "className": "App.Game.Scenes.LoadingScene",
+            "active": true,
+            "bundle": [
+                {
+                    "name": "boot-assets",
+                    "assets": [
+                        {
+                            "name": "logo",
+                            "srcs": "images/logo.png"
+                        },
+                        {
+                            "name": "EMPTY",
+                            "srcs": "images/empty.jpg"
+                        }
+                    ]
+                }
+            ],
+            "map": [
+                {
+                    "identity": "sprite",
+                    "texture": "logo",
+                    "name": "BLACKJACK LOGO",
+                    "x": 640,
+                    "y": 270,
+                    "anchorX": 0.5,
+                    "anchorY": 0.5
+                },
+                {
+                    "localName": "_loadingBar",
+                    "identity": "graphics",
+                    "shape": {
+                        "type": "line",
+                        "lineStyle": {
+                            "width": 20,
+                            "alignment": 0.5,
+                            "color": "#ffff00"
+                        },
+                        "width": 320
+                    },
+                    "x": 480,
+                    "y": 370
+                }
+            ]
+        },
+        {
+            "key": "MenuScene",
+            "className": "App.Game.Scenes.MenuScene",
+            "active": false,
+            "map": [
+                {
+                    "identity": "spritebutton",
+                    "localName": "_startButton",
+                    "texture": "buttons/start",
+                    "name": "START BUTTON",
+                    "x": 520,
+                    "y": 360,
+                    "up": "#ffffff",
+                    "enter": "#40fbf5",
+                    "down": "#25a09c",
+                    "disable": "#535353",
+                    "type": "tint",
+                    "children": [
+                        {
+                            "identity": "text",
+                            "text": "START",
+                            "anchorX": 0.5,
+                            "anchorY": 0.5,
+                            "x": 112,
+                            "y": 35,
+                            "style": {
+                                "fontFamily": "Bungee Regular",
+                                "fill": "#ffffff",
+                                "fontSize": 50,
+                                "align": "center"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "BackgroundScene",
+            "className": "App.Game.Scenes.BackgroundScene",
+            "active": false,
+            "map": [
+                {
+                    "identity": "sprite",
+                    "texture": "table",
+                    "name": "BACKGROUND",
+                    "x": 640,
+                    "y": 360,
+                    "anchorX": 0.5,
+                    "anchorY": 0.5
+                },
+                {
+                    "identity": "container",
+                    "name": "CARD BOX",
+                    "angle": -30,
+                    "x": 910,
+                    "y": 170,
+                    "scaleX": 0.75,
+                    "scaleY": 0.75,
+                    "children": [
+                        {
+                            "identity": "sprite",
+                            "texture": "card_box_bottom",
+                            "name": "CARD BOX BOTTOM",
+                            "anchorX": 0.5,
+                            "anchorY": 0.5
+                        },
+                        {
+                            "identity": "sprite",
+                            "texture": "cards/back",
+                            "x": -30,
+                            "anchorX": 0.5,
+                            "anchorY": 0.5
+                        },
+                        {
+                            "identity": "sprite",
+                            "texture": "cards/back",
+                            "x": -24,
+                            "anchorX": 0.5,
+                            "anchorY": 0.5
+                        },
+                        {
+                            "identity": "sprite",
+                            "texture": "cards/back",
+                            "x": -18,
+                            "anchorX": 0.5,
+                            "anchorY": 0.5
+                        },
+                        {
+                            "identity": "sprite",
+                            "texture": "cards/back",
+                            "x": -12,
+                            "anchorX": 0.5,
+                            "anchorY": 0.5
+                        },
+                        {
+                            "identity": "sprite",
+                            "texture": "cards/back",
+                            "x": -6,
+                            "anchorX": 0.5,
+                            "anchorY": 0.5
+                        },
+                        {
+                            "identity": "sprite",
+                            "texture": "card_box_top",
+                            "name": "CARD BOX TOP",
+                            "anchorX": 0.5,
+                            "anchorY": 0.5
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "GameScene",
+            "className": "App.Game.Scenes.GameScene",
+            "active": false,
+            "bundle": [
+                {
+                    "name": "game-options",
+                    "assets": [
+                        {
+                            "name": "blackjack",
+                            "srcs": "misc/blackjack.json",
+                            "loadParser": "loadJson"
+                        }
+                    ]
+                }
+            ],
+            "map": [
+                {
+                    "identity": "spritebutton",
+                    "localName": "_dealButton",
+                    "texture": "buttons/deal",
+                    "name": "DEAL BUTTON",
+                    "x": 920,
+                    "y": 480,
+                    "up": "#ffffff",
+                    "enter": "#dddddd",
+                    "down": "#aaaaaa",
+                    "disable": "#555555",
+                    "type": "tint",
+                    "scaleX": 0.5,
+                    "scaleY": 0.5,
+                    "children": [
+                        {
+                            "identity": "text",
+                            "text": "DEAL",
+                            "anchorX": 0.5,
+                            "anchorY": 0.5,
+                            "x": 112,
+                            "y": 35,
+                            "style": {
+                                "fontFamily": "Bungee Regular",
+                                "fill": "#ffffff",
+                                "fontSize": 50,
+                                "align": "center"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "identity": "spritebutton",
+                    "localName": "_standButton",
+                    "texture": "buttons/stand",
+                    "name": "STAND BUTTON",
+                    "x": 920,
+                    "y": 435,
+                    "up": "#ffffff",
+                    "enter": "#dddddd",
+                    "down": "#aaaaaa",
+                    "disable": "#555555",
+                    "type": "tint",
+                    "scaleX": 0.5,
+                    "scaleY": 0.5,
+                    "children": [
+                        {
+                            "identity": "text",
+                            "text": "STAND",
+                            "anchorX": 0.5,
+                            "anchorY": 0.5,
+                            "x": 112,
+                            "y": 35,
+                            "style": {
+                                "fontFamily": "Bungee Regular",
+                                "fill": "#ffffff",
+                                "fontSize": 50,
+                                "align": "center"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "identity": "spritebutton",
+                    "localName": "_hitButton",
+                    "texture": "buttons/hit",
+                    "name": "HIT BUTTON",
+                    "x": 920,
+                    "y": 390,
+                    "up": "#ffffff",
+                    "enter": "#dddddd",
+                    "down": "#aaaaaa",
+                    "disable": "#555555",
+                    "type": "tint",
+                    "scaleX": 0.5,
+                    "scaleY": 0.5,
+                    "children": [
+                        {
+                            "identity": "text",
+                            "text": "HIT",
+                            "anchorX": 0.5,
+                            "anchorY": 0.5,
+                            "x": 112,
+                            "y": 35,
+                            "style": {
+                                "fontFamily": "Bungee Regular",
+                                "fill": "#ffffff",
+                                "fontSize": 50,
+                                "align": "center"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

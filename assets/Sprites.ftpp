@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "version": "0.6.7"
+  },
+  "savePath": "C:\\Users\\Erdem\\OneDrive\\Masaüstü\\Blackjack\\assets\\exports\\low",
+  "images": [
+    {
+      "name": "card_box_bottom.png",
+      "path": "C:/Users/Erdem/OneDrive/Masaüstü/Blackjack/assets/images/card_box_bottom.png",
+      "folder": ""
+    },
+    {
+      "name": "card_box_top.png",
+      "path": "C:/Users/Erdem/OneDrive/Masaüstü/Blackjack/assets/images/card_box_top.png",
+      "folder": ""
+    },
+    {
+      "name": "table.png",
+      "path": "C:/Users/Erdem/OneDrive/Masaüstü/Blackjack/assets/images/table.png",
+      "folder": ""
+    }
+  ],
+  "folders": [
+    "C:/Users/Erdem/OneDrive/Masaüstü/Blackjack/assets/images/buttons",
+    "C:/Users/Erdem/OneDrive/Masaüstü/Blackjack/assets/images/cards",
+    "C:/Users/Erdem/OneDrive/Masaüstü/Blackjack/assets/images/chips",
+    "C:/Users/Erdem/OneDrive/Masaüstü/Blackjack/assets/images/coins"
+  ],
+  "packOptions": {
+    "textureName": "sprites",
+    "textureFormat": "png",
+    "removeFileExtension": true,
+    "prependFolderName": true,
+    "base64Export": false,
+    "tinify": true,
+    "tinifyKey": "3kPBPwYPkTNmyXsHYy9XPDDjH33ytR1l",
+    "scale": 1,
+    "filter": "none",
+    "exporter": "JSON (hash)",
+    "fileName": "pack-result",
+    "savePath": "C:\\Users\\Erdem\\OneDrive\\Masaüstü\\Blackjack\\assets\\exports\\low",
+    "width": 2048,
+    "height": 2048,
+    "fixedSize": false,
+    "powerOfTwo": false,
+    "padding": 1,
+    "extrude": 0,
+    "allowRotation": true,
+    "allowTrim": true,
+    "trimMode": "trim",
+    "alphaThreshold": "0",
+    "detectIdentical": true,
+    "packer": "MaxRectsPacker",
+    "packerMethod": "Smart"
+  }
+}
