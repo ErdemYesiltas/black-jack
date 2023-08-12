@@ -6,13 +6,13 @@ import { RandomNumber } from '../../engine/utils';
 
 export class Wallet extends PIXI.Container {
     scene: Scene;
+    isLocked = false;
     protected _total = 0;
     protected _totalText: PIXI.Text;
     protected _valueTween: TWEEN.Tween<any>;
-    protected _coinTweens: TWEEN.Tween<any>[] = [];
     protected _coinAnimPool: ObjectPool<PIXI.AnimatedSprite>;
 
-    constructor(scene: Scene, money?: number) {
+    constructor(scene: Scene) {
         super();
         // needed for tween animation
         this.scene = scene;
@@ -38,7 +38,7 @@ export class Wallet extends PIXI.Container {
         this.addChild(coinAnim.data);
 
         // total text
-        this._totalText = new PIXI.Text('', {
+        this._totalText = new PIXI.Text(`${this._total} €`, {
             fontFamily: 'Bungee Regular',
             fill: '#ffffff',
             fontSize: 16
@@ -47,8 +47,22 @@ export class Wallet extends PIXI.Container {
         this._totalText.position.set(40, 5);
         this.addChild(this._totalText);
 
-        // deposit money
-        this.deposit(money || 0, true);
+        this.sync();
+    }
+    sync(): void {
+        this.isLocked = false;
+        // sync money
+        this._total = this.scene.game.data.get('balance', 1000);
+        this._totalText.text = `${this._total} €`;
+    }
+    reset(): void {
+        if (this._valueTween && this._valueTween.isPlaying) {
+            this._valueTween.end();
+            this.scene.tween.remove(this._valueTween);
+        }
+
+        this._total = 0;
+        this._totalText.text = `${this._total} €`;
     }
     protected createCoinAnim(): PIXI.AnimatedSprite {
         const coinTextures = [
@@ -73,26 +87,22 @@ export class Wallet extends PIXI.Container {
 
         return coinAnim;
     }
-    // para yatırma
     deposit(value: number, skipAnim = false): void {
-        this.playAnim(this.total + value, skipAnim);
-        if (!skipAnim) {
-            this.playCoinAnim(value);
+        if (this.isLocked === false) {
+            this.playAnim(this.total + value, skipAnim);
+            if (!skipAnim) {
+                this.playCoinAnim(value);
+            }
+            this._total += value;
+            this.scene.game.data.set('balance', this._total).writeLocal();
         }
-        this._total += value;
-        this.save();
     }
-    // para çekme
     withdraw(value: number, skipAnim = false): boolean {
-        if (value > this.total) return false;
+        if (this.isLocked || value > this.total) return false;
         this.playAnim(this.total - value, skipAnim);
         this._total -= value;
-        this.save();
-        return false;
-    }
-    save(): void {
-        this.scene.game.data.set('balance', this.total);
-        this.scene.game.data.writeLocal();
+        this.scene.game.data.set('balance', this._total).writeLocal();
+        return true;
     }
     protected playAnim(value: number, skipAnim = false): void {
         if (this._valueTween && this._valueTween.isPlaying) {

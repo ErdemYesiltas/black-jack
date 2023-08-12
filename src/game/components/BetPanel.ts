@@ -6,6 +6,7 @@ import { ObjectPool, ObjectPoolMember } from 'src/engine/data';
 
 export class BetPanel extends PIXI.Container {
     scene: Scene;
+    isLocked = false;
     protected _bet = 0;
     protected _betText: PIXI.Text;
     protected _chipPool: ObjectPool<SpriteButton>;
@@ -24,7 +25,7 @@ export class BetPanel extends PIXI.Container {
         const back = new PIXI.Graphics();
         back.name = 'BET TEXT BACKGROUND';
         back.beginFill('#1e1e1e', .5).drawRoundedRect(0, 0, 100, 30, 7).endFill();
-        back.position.set(165, -225);
+        back.position.set(165, -80);
         this.addChild(back);
 
         this._betText = new PIXI.Text('', {
@@ -77,6 +78,10 @@ export class BetPanel extends PIXI.Container {
             }
         }
 
+        this.sync();
+        this.scene.game.data.on('changedata', this.onBalanceChange, this);
+    }
+    sync(): void {
         // sync bet
         this.bet = this.scene.game.data.get('bet', 0);
 
@@ -88,22 +93,29 @@ export class BetPanel extends PIXI.Container {
             });
         }
 
-        this.scene.game.data.on('changedata', this.onBalanceChange, this);
         this.checkChips();
         this.checkBalance();
     }
-    clear(): void {
-        const len = this._usedChips.length - 1;
-        for (let i = len; i >= 0; i--) {
-            if ((len - i) <= 5) {
-                this.playDecreaseAnim(i, false, 100 * (len - i));
-            } else {
-                this.playDecreaseAnim(i, true, 0);
+    reset(): void {
+        this.isLocked = false;
+        this.clear(true);
+    }
+    clear(hard = false): void {
+        if (this.isLocked === false) {
+            const len = this._usedChips.length - 1;
+            for (let i = len; i >= 0; i--) {
+                if (hard) {
+                    this.playDecreaseAnim(i, true, 0);
+                } else if ((len - i) <= 5) {
+                    this.playDecreaseAnim(i, false, 100 * (len - i));
+                } else {
+                    this.playDecreaseAnim(i, true, 0);
+                }
             }
+            this.scene.game.data.set('chips', []);
+            this.bet = 0;
+            this.checkChips();
         }
-        this.scene.game.data.set('chips', []);
-        this.bet = 0;
-        this.checkChips();
     }
     protected onBalanceChange(key: string): void {
         if (key === 'balance') {
@@ -119,10 +131,8 @@ export class BetPanel extends PIXI.Container {
                 const chip = this._mainChips[chipValue];
                 if (parseInt(chipValue) > balance) {
                     chip.disabled();
-                    chip.alpha = 0.5;
                 } else {
                     chip.enabled();
-                    chip.alpha = 1;
                 }
             }
         }
@@ -134,18 +144,20 @@ export class BetPanel extends PIXI.Container {
         }
     }
     protected increase(chip: number): void {
-        const keys = Object.keys(this._chips);
-        const balance = this.scene.game.data.get('balance', 0);
+        if (this.isLocked === false) {
+            const keys = Object.keys(this._chips);
+            const balance = this.scene.game.data.get('balance', 0);
 
-        if (keys.indexOf(chip.toString()) > -1) {
-            if (balance >= this._bet + chip) {
-                this.bet += chip;
-                this.checkChips();
-                const dbChips = this.scene.game.data.get('chips', []);
-                dbChips.push(chip);
-                this.scene.game.data.set('chips', dbChips).writeLocal();
+            if (keys.indexOf(chip.toString()) > -1) {
+                if (balance >= this._bet + chip) {
+                    this.bet += chip;
+                    this.checkChips();
+                    const dbChips = this.scene.game.data.get('chips', []);
+                    dbChips.push(chip);
+                    this.scene.game.data.set('chips', dbChips).writeLocal();
 
-                this.playIncreaseChipAnim(chip);
+                    this.playIncreaseChipAnim(chip);
+                }
             }
         }
     }
@@ -176,18 +188,20 @@ export class BetPanel extends PIXI.Container {
         });
     }
     protected decrease(chip: number, usedIndex: number): void {
-        const keys = Object.keys(this._chips);
+        if (this.isLocked === false) {
+            const keys = Object.keys(this._chips);
 
-        if (keys.indexOf(chip.toString()) > -1) {
-            if (this._bet >= chip) {
-                this.bet -= chip;
-                this.checkChips();
+            if (keys.indexOf(chip.toString()) > -1) {
+                if (this._bet >= chip) {
+                    this.bet -= chip;
+                    this.checkChips();
 
-                const dbChips: number[] = this.scene.game.data.get('chips', []);
-                dbChips.splice(dbChips.lastIndexOf(chip), 1);
-                this.scene.game.data.set('chips', dbChips).writeLocal();
+                    const dbChips: number[] = this.scene.game.data.get('chips', []);
+                    dbChips.splice(dbChips.lastIndexOf(chip), 1);
+                    this.scene.game.data.set('chips', dbChips).writeLocal();
 
-                this.playDecreaseAnim(usedIndex);
+                    this.playDecreaseAnim(usedIndex);
+                }
             }
         }
     }

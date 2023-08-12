@@ -6,13 +6,11 @@ export type CardTextureList = Record<CardTypes, Record<CardValues, string | { ba
 export interface CardOptions {
     back: string;
     front: string;
-    value: number | number[];
     subType: CardValues;
     type: CardTypes;
     owner: 'dealer' | 'player';
 }
 export class Card extends PIXI.Container {
-    value: number | number[] = [0];
     subType: CardValues = null;
     type: CardTypes = null;
     owner: 'dealer' | 'player' = null;
@@ -27,7 +25,6 @@ export class Card extends PIXI.Container {
         this.create(options);
     }
     create(options: CardOptions): void {
-        this.value = options.value;
         this.subType = options.subType;
         this.type = options.type;
         this.owner = options.owner;
@@ -55,7 +52,6 @@ export class Card extends PIXI.Container {
         this.alpha = 1;
         this.angle = 0;
 
-        this.value = 0;
         this.subType = null;
         this.type = null;
         this.owner = null;

@@ -83,39 +83,49 @@ export class SceneManager extends PIXI.utils.EventEmitter<SceneManagerEvents>
     start(key: string): this {
         const scene = this.get(key);
 
-        if (scene !== null && !scene.isBooted) {
-            if (this._scenes[scene.key].conf.bundle) {
-                const bundles = this.getConf(scene.key)?.bundle || [];
-                const bundleNames: string[] = [];
+        if (scene !== null) {
+            if (!scene.isBooted) {
+                if (this._scenes[scene.key].conf.bundle) {
+                    const bundles = this.getConf(scene.key)?.bundle || [];
+                    const bundleNames: string[] = [];
 
-                bundles.forEach((bundle) => {
-                    PIXI.Assets.addBundle(bundle.name, bundle.assets);
-                    bundleNames.push(bundle.name);
-                });
+                    bundles.forEach((bundle) => {
+                        PIXI.Assets.addBundle(bundle.name, bundle.assets);
+                        bundleNames.push(bundle.name);
+                    });
 
-                PIXI.Assets.loadBundle(bundleNames).then(() => {
-                    if (scene.preload) {
-                        scene.preload().then(() => {
+                    PIXI.Assets.loadBundle(bundleNames).then(() => {
+                        if (scene.preload) {
+                            scene.preload().then(() => {
+                                this.createScene(scene.key);
+                            });
+                        }
+                        else {
                             this.createScene(scene.key);
-                        });
-                    }
-                    else {
+                        }
+                    });
+
+                    return this;
+                }
+
+                if (scene.preload) {
+                    scene.preload().then(() => {
                         this.createScene(scene.key);
-                    }
-                });
+                    });
 
-                return this;
+                    return this;
+                }
+
+                this.createScene(scene.key);
+            } else {
+                if (scene.isSleeping) {
+                    this.wakeup(key);
+                }
+
+                if (!scene.isActive) {
+                    this.resume(key);
+                }
             }
-
-            if (scene.preload) {
-                scene.preload().then(() => {
-                    this.createScene(scene.key);
-                });
-
-                return this;
-            }
-
-            this.createScene(scene.key);
         }
         return this;
     }

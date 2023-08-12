@@ -11,6 +11,6 @@ export class BackgroundScene extends Scene {
 
         safeArea.beginFill('#000000', .3).lineStyle({ width: 5 }).drawRect(0, 0, 450, 600).endFill();
 
-        //this.addChild(safeArea);
+        this.addChild(safeArea);
     }
 }

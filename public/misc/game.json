@@ -79,6 +79,23 @@
                     "anchorY": 0.5,
                     "scaleX": 0.5,
                     "scaleY": 0.5
+                },
+                {
+                    "identity": "spritebutton",
+                    "localName": "_settingButton",
+                    "texture": "buttons/settings",
+                    "name": "SETTINGS BUTTON",
+                    "x": 445,
+                    "y": 128,
+                    "anchorX": 0.5,
+                    "anchorY": 0.5,
+                    "scaleX": 0.5,
+                    "scaleY": 0.5,
+                    "up": "#ffffff",
+                    "enter": "#dddddd",
+                    "down": "#aaaaaa",
+                    "disable": "#555555",
+                    "type": "tint"
                 }
             ]
         },
@@ -104,6 +121,7 @@
                     "children": [
                         {
                             "identity": "text",
+                            "localName": "_label",
                             "text": "START",
                             "anchorX": 0.5,
                             "anchorY": 0.5,
@@ -119,33 +137,35 @@
                 },
                 {
                     "identity": "spritebutton",
-                    "localName": "_settingButton",
-                    "texture": "buttons/settings",
-                    "name": "SETTINGS BUTTON",
-                    "x": 460,
-                    "y": 106,
+                    "localName": "_resetButton",
+                    "texture": "buttons/deal",
+                    "name": "RESET BUTTON",
+                    "x": 640,
+                    "y": 440,
                     "anchorX": 0.5,
                     "anchorY": 0.5,
                     "up": "#ffffff",
                     "enter": "#dddddd",
                     "down": "#aaaaaa",
                     "disable": "#555555",
-                    "type": "tint"
-                },
-                {
-                    "identity": "spritebutton",
-                    "localName": "_homeButton",
-                    "texture": "buttons/home",
-                    "name": "HOME BUTTON",
-                    "x": 460,
-                    "y": 183,
-                    "anchorX": 0.5,
-                    "anchorY": 0.5,
-                    "up": "#ffffff",
-                    "enter": "#dddddd",
-                    "down": "#aaaaaa",
-                    "disable": "#555555",
-                    "type": "tint"
+                    "type": "tint",
+                    "visible": false,
+                    "children": [
+                        {
+                            "identity": "text",
+                            "localName": "_label",
+                            "text": "RESET",
+                            "anchorX": 0.5,
+                            "anchorY": 0.5,
+                            "y": -5,
+                            "style": {
+                                "fontFamily": "Bungee Regular",
+                                "fill": "#ffffff",
+                                "fontSize": 40,
+                                "align": "center"
+                            }
+                        }
+                    ]
                 }
             ]
         },
@@ -166,6 +186,23 @@
                 }
             ],
             "map": [
+                {
+                    "identity": "spritebutton",
+                    "localName": "_homeButton",
+                    "texture": "buttons/home",
+                    "name": "HOME BUTTON",
+                    "x": 445,
+                    "y": 165,
+                    "anchorX": 0.5,
+                    "anchorY": 0.5,
+                    "scaleX": 0.5,
+                    "scaleY": 0.5,
+                    "up": "#ffffff",
+                    "enter": "#dddddd",
+                    "down": "#aaaaaa",
+                    "disable": "#555555",
+                    "type": "tint"
+                },
                 {
                     "identity": "spritebutton",
                     "localName": "_hitButton",

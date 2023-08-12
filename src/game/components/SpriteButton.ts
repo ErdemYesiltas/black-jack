@@ -67,11 +67,13 @@ export class SpriteButton extends PIXI.Sprite {
     disabled(): void {
         this.eventMode = 'none';
         this._isDisabled = true;
+        this.alpha = 0.5;
         this.setState('disable');
     }
     enabled(): void {
         this.eventMode = 'dynamic';
         this._isDisabled = false;
+        this.alpha = 1;
         this.setState('up');
     }
     // getters and setters
