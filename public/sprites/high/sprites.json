@@ -4,20 +4,20 @@
       "frame": {
         "x": 1,
         "y": 1,
-        "w": 1131,
-        "h": 574
+        "w": 450,
+        "h": 720
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 1131,
-        "h": 574
+        "w": 450,
+        "h": 720
       },
       "sourceSize": {
-        "w": 1131,
-        "h": 574
+        "w": 450,
+        "h": 720
       },
       "pivot": {
         "x": 0.5,
@@ -26,70 +26,22 @@
     },
     "buttons/deal": {
       "frame": {
-        "x": 1,
-        "y": 577,
+        "x": 453,
+        "y": 1,
         "w": 225,
         "h": 75
       },
-      "rotated": false,
-      "trimmed": false,
+      "rotated": true,
+      "trimmed": true,
       "spriteSourceSize": {
         "x": 0,
-        "y": 0,
+        "y": 1,
         "w": 225,
         "h": 75
       },
       "sourceSize": {
         "w": 225,
-        "h": 75
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "buttons/stand": {
-      "frame": {
-        "x": 228,
-        "y": 577,
-        "w": 225,
-        "h": 75
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 225,
-        "h": 75
-      },
-      "sourceSize": {
-        "w": 225,
-        "h": 75
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "buttons/start": {
-      "frame": {
-        "x": 455,
-        "y": 577,
-        "w": 225,
-        "h": 75
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 225,
-        "h": 75
-      },
-      "sourceSize": {
-        "w": 225,
-        "h": 75
+        "h": 76
       },
       "pivot": {
         "x": 0.5,
@@ -98,166 +50,214 @@
     },
     "buttons/hit": {
       "frame": {
-        "x": 682,
-        "y": 577,
+        "x": 453,
+        "y": 228,
         "w": 225,
         "h": 75
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 225,
+        "h": 75
+      },
+      "sourceSize": {
+        "w": 225,
+        "h": 76
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "buttons/start": {
+      "frame": {
+        "x": 453,
+        "y": 455,
+        "w": 225,
+        "h": 75
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 225,
+        "h": 75
+      },
+      "sourceSize": {
+        "w": 225,
+        "h": 76
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "buttons/stand": {
+      "frame": {
+        "x": 530,
+        "y": 1,
+        "w": 225,
+        "h": 75
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 1,
+        "w": 225,
+        "h": 75
+      },
+      "sourceSize": {
+        "w": 225,
+        "h": 76
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "chips/chip_4": {
+      "frame": {
+        "x": 607,
+        "y": 1,
+        "w": 224,
+        "h": 224
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 225,
-        "h": 75
+        "w": 224,
+        "h": 224
       },
       "sourceSize": {
-        "w": 225,
-        "h": 75
+        "w": 224,
+        "h": 224
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "cards/hearts/6": {
+    "chips/chip_0": {
+      "frame": {
+        "x": 607,
+        "y": 227,
+        "w": 224,
+        "h": 224
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 224,
+        "h": 224
+      },
+      "sourceSize": {
+        "w": 224,
+        "h": 224
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "chips/chip_1": {
+      "frame": {
+        "x": 530,
+        "y": 453,
+        "w": 224,
+        "h": 224
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 224,
+        "h": 224
+      },
+      "sourceSize": {
+        "w": 224,
+        "h": 224
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "chips/chip_2": {
       "frame": {
         "x": 1,
-        "y": 654,
-        "w": 120,
-        "h": 174
+        "y": 723,
+        "w": 224,
+        "h": 224
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 224,
+        "h": 224
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 224,
+        "h": 224
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "card_box_top": {
+    "chips/chip_3": {
       "frame": {
-        "x": 177,
-        "y": 654,
-        "w": 101,
-        "h": 174
+        "x": 227,
+        "y": 723,
+        "w": 224,
+        "h": 224
       },
-      "rotated": true,
-      "trimmed": true,
+      "rotated": false,
+      "trimmed": false,
       "spriteSourceSize": {
-        "x": 19,
+        "x": 0,
         "y": 0,
-        "w": 101,
-        "h": 174
+        "w": 224,
+        "h": 224
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 224,
+        "h": 224
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "cards/clubs/10": {
+    "cards/hearts/7": {
       "frame": {
-        "x": 353,
-        "y": 654,
-        "w": 120,
-        "h": 174
+        "x": 453,
+        "y": 682,
+        "w": 201,
+        "h": 214
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/clubs/2": {
-      "frame": {
-        "x": 529,
-        "y": 654,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/clubs/3": {
-      "frame": {
-        "x": 705,
-        "y": 654,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/clubs/4": {
-      "frame": {
-        "x": 881,
-        "y": 654,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -266,22 +266,22 @@
     },
     "cards/clubs/5": {
       "frame": {
-        "x": 177,
-        "y": 757,
-        "w": 120,
-        "h": 174
+        "x": 833,
+        "y": 1,
+        "w": 201,
+        "h": 214
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -290,22 +290,22 @@
     },
     "cards/clubs/6": {
       "frame": {
-        "x": 1,
-        "y": 776,
-        "w": 120,
-        "h": 174
+        "x": 833,
+        "y": 217,
+        "w": 201,
+        "h": 214
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -314,22 +314,22 @@
     },
     "cards/clubs/7": {
       "frame": {
-        "x": 353,
-        "y": 776,
-        "w": 120,
-        "h": 174
+        "x": 833,
+        "y": 433,
+        "w": 201,
+        "h": 214
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -338,22 +338,22 @@
     },
     "cards/clubs/8": {
       "frame": {
-        "x": 529,
-        "y": 776,
-        "w": 120,
-        "h": 174
+        "x": 656,
+        "y": 679,
+        "w": 201,
+        "h": 214
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -362,22 +362,22 @@
     },
     "cards/clubs/9": {
       "frame": {
-        "x": 705,
-        "y": 776,
-        "w": 120,
-        "h": 174
+        "x": 1,
+        "y": 949,
+        "w": 201,
+        "h": 214
       },
       "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -386,22 +386,22 @@
     },
     "cards/clubs/A": {
       "frame": {
-        "x": 881,
-        "y": 776,
-        "w": 120,
-        "h": 174
+        "x": 217,
+        "y": 949,
+        "w": 201,
+        "h": 214
       },
       "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -410,22 +410,22 @@
     },
     "cards/clubs/J": {
       "frame": {
-        "x": 177,
-        "y": 879,
-        "w": 120,
-        "h": 174
+        "x": 433,
+        "y": 949,
+        "w": 201,
+        "h": 214
       },
       "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -434,22 +434,22 @@
     },
     "cards/clubs/K": {
       "frame": {
-        "x": 1,
+        "x": 649,
         "y": 898,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -458,22 +458,22 @@
     },
     "cards/clubs/Q": {
       "frame": {
-        "x": 353,
-        "y": 898,
-        "w": 120,
-        "h": 174
+        "x": 1036,
+        "y": 1,
+        "w": 201,
+        "h": 214
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -482,22 +482,22 @@
     },
     "cards/diamonds/10": {
       "frame": {
-        "x": 529,
-        "y": 898,
-        "w": 120,
-        "h": 174
+        "x": 1036,
+        "y": 217,
+        "w": 201,
+        "h": 214
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -506,22 +506,22 @@
     },
     "cards/diamonds/2": {
       "frame": {
-        "x": 705,
-        "y": 898,
-        "w": 120,
-        "h": 174
+        "x": 1036,
+        "y": 433,
+        "w": 201,
+        "h": 214
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -530,22 +530,22 @@
     },
     "cards/diamonds/3": {
       "frame": {
-        "x": 881,
-        "y": 898,
-        "w": 120,
-        "h": 174
+        "x": 852,
+        "y": 895,
+        "w": 201,
+        "h": 214
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -554,22 +554,22 @@
     },
     "cards/diamonds/4": {
       "frame": {
-        "x": 177,
-        "y": 1001,
-        "w": 120,
-        "h": 174
+        "x": 859,
+        "y": 649,
+        "w": 201,
+        "h": 214
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -579,21 +579,21 @@
     "cards/diamonds/5": {
       "frame": {
         "x": 1,
-        "y": 1020,
-        "w": 120,
-        "h": 174
+        "y": 1152,
+        "w": 201,
+        "h": 214
       },
       "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -602,22 +602,22 @@
     },
     "cards/diamonds/6": {
       "frame": {
-        "x": 353,
-        "y": 1020,
-        "w": 120,
-        "h": 174
+        "x": 217,
+        "y": 1152,
+        "w": 201,
+        "h": 214
       },
       "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -626,22 +626,22 @@
     },
     "cards/diamonds/7": {
       "frame": {
-        "x": 529,
-        "y": 1020,
-        "w": 120,
-        "h": 174
+        "x": 433,
+        "y": 1152,
+        "w": 201,
+        "h": 214
       },
       "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -650,22 +650,22 @@
     },
     "cards/diamonds/8": {
       "frame": {
-        "x": 705,
-        "y": 1020,
-        "w": 120,
-        "h": 174
+        "x": 649,
+        "y": 1114,
+        "w": 201,
+        "h": 214
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -674,22 +674,22 @@
     },
     "cards/diamonds/9": {
       "frame": {
-        "x": 881,
-        "y": 1020,
-        "w": 120,
-        "h": 174
+        "x": 852,
+        "y": 1111,
+        "w": 201,
+        "h": 214
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -698,22 +698,22 @@
     },
     "cards/diamonds/A": {
       "frame": {
-        "x": 1134,
+        "x": 1239,
         "y": 1,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -722,22 +722,22 @@
     },
     "cards/diamonds/J": {
       "frame": {
-        "x": 1134,
-        "y": 177,
-        "w": 120,
-        "h": 174
+        "x": 1239,
+        "y": 217,
+        "w": 201,
+        "h": 214
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -746,22 +746,22 @@
     },
     "cards/diamonds/K": {
       "frame": {
-        "x": 1134,
-        "y": 353,
-        "w": 120,
-        "h": 174
+        "x": 1239,
+        "y": 433,
+        "w": 201,
+        "h": 214
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -770,22 +770,22 @@
     },
     "cards/diamonds/Q": {
       "frame": {
-        "x": 1134,
-        "y": 529,
-        "w": 120,
-        "h": 174
+        "x": 1062,
+        "y": 649,
+        "w": 201,
+        "h": 214
       },
-      "rotated": false,
+      "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -794,22 +794,22 @@
     },
     "cards/hearts/10": {
       "frame": {
-        "x": 1057,
-        "y": 705,
-        "w": 120,
-        "h": 174
+        "x": 1062,
+        "y": 852,
+        "w": 201,
+        "h": 214
       },
       "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -818,22 +818,22 @@
     },
     "cards/hearts/2": {
       "frame": {
-        "x": 1057,
-        "y": 827,
-        "w": 120,
-        "h": 174
+        "x": 1055,
+        "y": 1055,
+        "w": 201,
+        "h": 214
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -842,574 +842,22 @@
     },
     "cards/hearts/3": {
       "frame": {
-        "x": 1057,
-        "y": 949,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "card_box_bottom": {
-      "frame": {
-        "x": 177,
-        "y": 1123,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/hearts/5": {
-      "frame": {
         "x": 1,
-        "y": 1142,
-        "w": 120,
-        "h": 174
+        "y": 1355,
+        "w": 201,
+        "h": 214
       },
       "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/back": {
-      "frame": {
-        "x": 353,
-        "y": 1142,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/hearts/7": {
-      "frame": {
-        "x": 529,
-        "y": 1142,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/hearts/8": {
-      "frame": {
-        "x": 705,
-        "y": 1142,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/hearts/9": {
-      "frame": {
-        "x": 881,
-        "y": 1142,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/hearts/A": {
-      "frame": {
-        "x": 1057,
-        "y": 1125,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/hearts/J": {
-      "frame": {
-        "x": 1179,
-        "y": 949,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/hearts/K": {
-      "frame": {
-        "x": 1256,
-        "y": 1,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/hearts/Q": {
-      "frame": {
-        "x": 1256,
-        "y": 177,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/spades/10": {
-      "frame": {
-        "x": 1256,
-        "y": 353,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/spades/2": {
-      "frame": {
-        "x": 1256,
-        "y": 529,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/spades/3": {
-      "frame": {
-        "x": 1233,
-        "y": 705,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/spades/4": {
-      "frame": {
-        "x": 177,
-        "y": 1245,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/spades/5": {
-      "frame": {
-        "x": 1,
-        "y": 1264,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/spades/6": {
-      "frame": {
-        "x": 353,
-        "y": 1264,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/spades/7": {
-      "frame": {
-        "x": 529,
-        "y": 1264,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/spades/8": {
-      "frame": {
-        "x": 705,
-        "y": 1264,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/spades/9": {
-      "frame": {
-        "x": 881,
-        "y": 1264,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/spades/A": {
-      "frame": {
-        "x": 1057,
-        "y": 1247,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/spades/J": {
-      "frame": {
-        "x": 1233,
-        "y": 1125,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/spades/K": {
-      "frame": {
-        "x": 1378,
-        "y": 1,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "cards/spades/Q": {
-      "frame": {
-        "x": 1378,
-        "y": 177,
-        "w": 120,
-        "h": 174
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 120,
-        "h": 174
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
@@ -1418,118 +866,670 @@
     },
     "cards/hearts/4": {
       "frame": {
-        "x": 1378,
-        "y": 353,
-        "w": 120,
-        "h": 174
+        "x": 217,
+        "y": 1355,
+        "w": 201,
+        "h": 214
       },
-      "rotated": false,
+      "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 120,
-        "h": 174
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "chips/chip_0": {
+    "cards/hearts/5": {
       "frame": {
-        "x": 1233,
-        "y": 881,
-        "w": 60,
-        "h": 60
+        "x": 433,
+        "y": 1355,
+        "w": 201,
+        "h": 214
       },
-      "rotated": false,
+      "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 60,
-        "h": 60
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 60,
-        "h": 60
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "chips/chip_2": {
+    "cards/hearts/6": {
       "frame": {
-        "x": 1295,
-        "y": 881,
-        "w": 60,
-        "h": 60
+        "x": 649,
+        "y": 1330,
+        "w": 201,
+        "h": 214
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 60,
-        "h": 60
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 60,
-        "h": 60
+        "w": 201,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "chips/chip_3": {
+    "cards/back": {
       "frame": {
-        "x": 909,
-        "y": 577,
-        "w": 60,
-        "h": 60
+        "x": 852,
+        "y": 1327,
+        "w": 200,
+        "h": 214
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 60,
-        "h": 60
+        "w": 200,
+        "h": 214
       },
       "sourceSize": {
-        "w": 60,
-        "h": 60
+        "w": 200,
+        "h": 214
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "chips/chip_4": {
+    "cards/hearts/8": {
       "frame": {
-        "x": 1057,
-        "y": 577,
-        "w": 60,
-        "h": 60
+        "x": 1054,
+        "y": 1327,
+        "w": 201,
+        "h": 214
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 60,
-        "h": 60
+        "w": 201,
+        "h": 214
       },
       "sourceSize": {
-        "w": 60,
-        "h": 60
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/hearts/9": {
+      "frame": {
+        "x": 1442,
+        "y": 1,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/hearts/A": {
+      "frame": {
+        "x": 1442,
+        "y": 217,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/hearts/J": {
+      "frame": {
+        "x": 1442,
+        "y": 433,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/hearts/K": {
+      "frame": {
+        "x": 1257,
+        "y": 1271,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/hearts/Q": {
+      "frame": {
+        "x": 1258,
+        "y": 1055,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/spades/10": {
+      "frame": {
+        "x": 1278,
+        "y": 649,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/spades/2": {
+      "frame": {
+        "x": 1278,
+        "y": 852,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/spades/3": {
+      "frame": {
+        "x": 1,
+        "y": 1558,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/spades/4": {
+      "frame": {
+        "x": 217,
+        "y": 1558,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/spades/5": {
+      "frame": {
+        "x": 433,
+        "y": 1558,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/spades/6": {
+      "frame": {
+        "x": 852,
+        "y": 1543,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/spades/7": {
+      "frame": {
+        "x": 1055,
+        "y": 1543,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/spades/8": {
+      "frame": {
+        "x": 1258,
+        "y": 1487,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/spades/9": {
+      "frame": {
+        "x": 1460,
+        "y": 1271,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/spades/A": {
+      "frame": {
+        "x": 1461,
+        "y": 1055,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/spades/J": {
+      "frame": {
+        "x": 1645,
+        "y": 1,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/spades/K": {
+      "frame": {
+        "x": 1645,
+        "y": 217,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/spades/Q": {
+      "frame": {
+        "x": 1645,
+        "y": 433,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/clubs/10": {
+      "frame": {
+        "x": 1461,
+        "y": 1487,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/clubs/2": {
+      "frame": {
+        "x": 1494,
+        "y": 649,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/clubs/3": {
+      "frame": {
+        "x": 1494,
+        "y": 852,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cards/clubs/4": {
+      "frame": {
+        "x": 649,
+        "y": 1546,
+        "w": 201,
+        "h": 214
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 201,
+        "h": 214
+      },
+      "sourceSize": {
+        "w": 201,
+        "h": 214
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "deck": {
+      "frame": {
+        "x": 1,
+        "y": 1762,
+        "w": 194,
+        "h": 210
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 194,
+        "h": 210
+      },
+      "sourceSize": {
+        "w": 194,
+        "h": 210
       },
       "pivot": {
         "x": 0.5,
@@ -1538,166 +1538,22 @@
     },
     "coins/00000": {
       "frame": {
-        "x": 1057,
-        "y": 639,
-        "w": 60,
-        "h": 60
+        "x": 1710,
+        "y": 649,
+        "w": 90,
+        "h": 90
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 60,
-        "h": 60
+        "w": 90,
+        "h": 90
       },
       "sourceSize": {
-        "w": 60,
-        "h": 60
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "chips/chip_1": {
-      "frame": {
-        "x": 971,
-        "y": 577,
-        "w": 60,
-        "h": 60
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 60,
-        "h": 60
-      },
-      "sourceSize": {
-        "w": 60,
-        "h": 60
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "coins/00002": {
-      "frame": {
-        "x": 1233,
-        "y": 1301,
-        "w": 50,
-        "h": 60
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 5,
-        "y": 0,
-        "w": 50,
-        "h": 60
-      },
-      "sourceSize": {
-        "w": 60,
-        "h": 60
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "coins/00003": {
-      "frame": {
-        "x": 1119,
-        "y": 577,
-        "w": 10,
-        "h": 60
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 25,
-        "y": 0,
-        "w": 10,
-        "h": 60
-      },
-      "sourceSize": {
-        "w": 60,
-        "h": 60
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "coins/00004": {
-      "frame": {
-        "x": 1285,
-        "y": 1301,
-        "w": 46,
-        "h": 60
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 7,
-        "y": 0,
-        "w": 46,
-        "h": 60
-      },
-      "sourceSize": {
-        "w": 60,
-        "h": 60
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "coins/00005": {
-      "frame": {
-        "x": 1333,
-        "y": 1301,
-        "w": 56,
-        "h": 60
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 2,
-        "y": 0,
-        "w": 56,
-        "h": 60
-      },
-      "sourceSize": {
-        "w": 60,
-        "h": 60
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "coins/00006": {
-      "frame": {
-        "x": 1391,
-        "y": 529,
-        "w": 60,
-        "h": 60
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 60,
-        "h": 60
-      },
-      "sourceSize": {
-        "w": 60,
-        "h": 60
+        "w": 90,
+        "h": 90
       },
       "pivot": {
         "x": 0.5,
@@ -1706,22 +1562,190 @@
     },
     "coins/00001": {
       "frame": {
-        "x": 1391,
-        "y": 591,
-        "w": 56,
-        "h": 60
+        "x": 1710,
+        "y": 741,
+        "w": 84,
+        "h": 90
       },
       "rotated": true,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 2,
+        "x": 3,
         "y": 0,
-        "w": 56,
-        "h": 60
+        "w": 84,
+        "h": 90
       },
       "sourceSize": {
-        "w": 60,
-        "h": 60
+        "w": 90,
+        "h": 90
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coins/00002": {
+      "frame": {
+        "x": 530,
+        "y": 228,
+        "w": 74,
+        "h": 90
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 8,
+        "y": 0,
+        "w": 74,
+        "h": 90
+      },
+      "sourceSize": {
+        "w": 90,
+        "h": 90
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coins/00003": {
+      "frame": {
+        "x": 756,
+        "y": 649,
+        "w": 16,
+        "h": 90
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 37,
+        "y": 0,
+        "w": 16,
+        "h": 90
+      },
+      "sourceSize": {
+        "w": 90,
+        "h": 90
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coins/00004": {
+      "frame": {
+        "x": 530,
+        "y": 320,
+        "w": 68,
+        "h": 90
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 11,
+        "y": 0,
+        "w": 68,
+        "h": 90
+      },
+      "sourceSize": {
+        "w": 90,
+        "h": 90
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coins/00005": {
+      "frame": {
+        "x": 1710,
+        "y": 827,
+        "w": 84,
+        "h": 90
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 3,
+        "y": 0,
+        "w": 84,
+        "h": 90
+      },
+      "sourceSize": {
+        "w": 90,
+        "h": 90
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coins/00006": {
+      "frame": {
+        "x": 1710,
+        "y": 913,
+        "w": 90,
+        "h": 90
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 90,
+        "h": 90
+      },
+      "sourceSize": {
+        "w": 90,
+        "h": 90
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "buttons/home": {
+      "frame": {
+        "x": 756,
+        "y": 453,
+        "w": 72,
+        "h": 72
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 72,
+        "h": 72
+      },
+      "sourceSize": {
+        "w": 72,
+        "h": 72
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "buttons/settings": {
+      "frame": {
+        "x": 756,
+        "y": 527,
+        "w": 72,
+        "h": 72
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 72,
+        "h": 72
+      },
+      "sourceSize": {
+        "w": 72,
+        "h": 72
       },
       "pivot": {
         "x": 0.5,
@@ -1735,8 +1759,8 @@
     "image": "sprites.png",
     "format": "RGBA8888",
     "size": {
-      "w": 1499,
-      "h": 1385
+      "w": 1847,
+      "h": 1957
     },
     "scale": 1
   }

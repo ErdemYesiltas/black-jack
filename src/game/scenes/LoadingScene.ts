@@ -29,8 +29,8 @@ export class LoadingScene extends Scene {
     onAssetLoadComplete(): void {
         // start inital scenes
         this.game.scene.start('BackgroundScene');
-        //this.game.scene.start('MenuScene');
-        this.game.scene.start('GameScene');
+        this.game.scene.start('MenuScene');
+        //this.game.scene.start('GameScene');
         // stop and remove this scene
         this.game.scene.stop('LoadingScene');
     }

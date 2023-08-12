@@ -10,8 +10,8 @@ export class MenuScene extends Scene {
             this.game.data.set('balance', 1000);
             this.game.data.set('bet', 0);
             this.game.data.set('chips', []);
-            this.game.data.set('dealer.cards', {});
-            this.game.data.set('player.cards', {});
+            this.game.data.set('dealer.cards', []);
+            this.game.data.set('player.cards', []);
             this.game.data.set('options.music', true);
             this.game.data.set('options.sound', true);
             this.game.data.set('statistic.win', 0);
@@ -28,7 +28,7 @@ export class MenuScene extends Scene {
         this.game.data.readLocal();
     }
     create(): void {
-        this._startButton.onclick = this.onStartClick.bind(this);
+        this._startButton.onclick = this._startButton.ontap = this.onStartClick.bind(this);
     }
     // event listeners
     protected onSleep(): void {

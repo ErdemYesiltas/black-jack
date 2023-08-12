@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import * as TWEEN from '@tweenjs/tween.js';
 import { RandomNumber } from '../../engine/utils';
 import { ObjectPool, ObjectPoolMember } from '../../engine/data';
 import { Card, CardOptions, CardTextureList, CardTypes, CardValues } from './Card';
@@ -10,6 +11,8 @@ export interface DeckOptions {
 }
 export class Deck extends PIXI.Container {
     scene: Scene;
+    protected _playerCards: PIXI.Container;
+    protected _dealerCards: PIXI.Container;
     protected _options: DeckOptions;
     protected _cardPool: ObjectPool<Card>;
     protected _cardValues: Record<CardValues, number | number[]> = {
@@ -37,6 +40,20 @@ export class Deck extends PIXI.Container {
         this.scene = scene;
         this.name = 'DECK VIEW';
 
+        // dealer card container
+        this._dealerCards = new PIXI.Container();
+        this._dealerCards.name = 'DEALER CARDS';
+        this._dealerCards.position.set(88, -30);
+        this._dealerCards.scale.set(0.5);
+        this.addChild(this._dealerCards);
+
+        // player card container
+        this._playerCards = new PIXI.Container();
+        this._playerCards.name = 'PLAYER CARDS';
+        this._playerCards.position.set(88, 140);
+        this._playerCards.scale.set(0.75);
+        this.addChild(this._playerCards);
+
         this._options = options;
         this._cardPool = new ObjectPool(this.newCard, this.resetCard, 8);
 
@@ -55,7 +72,7 @@ export class Deck extends PIXI.Container {
                     cardTexture = { back: defaultBack, front: cardTexture };
                 }
 
-                this._cards.push({ back: defaultBack, ...cardTexture, type: type, subType, value: this._cardValues[subType as CardValues] });
+                this._cards.push({ back: defaultBack, ...cardTexture, type: type, subType, value: this._cardValues[subType as CardValues], owner: null });
             });
         });
         this.shuffle();
@@ -74,28 +91,39 @@ export class Deck extends PIXI.Container {
 
             card.data.create(cardOptions);
             card.data.alpha = 0;
-            card.data.position.set(330, -40);
-            card.data.scale.set(0.75);
-            card.data.pivot.set(60, 87);
-            card.data.angle = 0;
-            card.data.close();
-
+            card.data.position.set(type === 'dealer' ? 380 : 235, type === 'dealer' ? -80 : -260);
+            card.data.angle = -30;
+            card.data.pivot.set(100);
+            card.data.owner = type;
             cards.push(card);
+            type === 'dealer' && this._dealerCards.children.length == 1 ? card.data.close() : card.data.open();
+            type === 'dealer' ? this._dealerCards.addChild(card.data) : this._playerCards.addChild(card.data);
+
+            const dbCards = this.scene.game.data.get(`${type}.cards`, []);
+            dbCards.push({ type: card.data.type, subType: card.data.subType, value: card.data.value });
+            this.scene.game.data.set(`${type}.cards`, dbCards).writeLocal();
+
+            // remove card from deck
             this._copies.splice(randomIndex, 1);
-            this.addChild(card.data);
             // card animation
-            const x = 60;
-            const y = type === 'dealer' ? -30 : 150;
+            const gap = type === 'dealer' ? 40 : 30;
+            const limitX = type === 'dealer' ? -320 : -180;
             const alpha = 1;
             const angle = -360;
 
             this.scene.tween.add({
                 target: card.data,
-                to: { x, y, angle, alpha },
+                to: { x: 0, y: 0, angle, alpha },
                 delay: 100 * i,
                 duration: 300,
-                onStart: () => {
-                    card.data.open();
+                onComplete: (obj: any) => {
+                    const container = obj.owner === 'dealer' ? this._dealerCards : this._playerCards;
+                    const children = [...container.children];
+                    children.splice(children.indexOf(obj), 1);
+
+                    children.forEach((c) => {
+                        if (c.x >= limitX) c.x -= gap;
+                    });
                 }
             });
         }
@@ -104,33 +132,42 @@ export class Deck extends PIXI.Container {
 
         return cards;
     }
-    relase(cards?: ObjectPoolMember<Card>[]): void {
-        if (cards === undefined) { cards = this._usedCards; }
-        cards.forEach((card, i) => {
+    relase(): void {
+        // move dealer container
+        this.scene.tween.add({
+            target: this._dealerCards,
+            to: { x: -300 },
+            duration: 1000,
+            easing: TWEEN.Easing.Back.InOut,
+            onComplete: () => {
+                this.scene.game.data.set('dealer.cards', []).writeLocal();
+            }
+        });
 
-            this.scene.tween.add({
-                target: card.data,
-                to: { x: -300, alpha: 0 },
-                duration: 300,
-                delay: 100 * i,
-                onComplete: () => {
-                    if (card.data.parent) {
-                        card.data.parent.removeChild(card.data);
-                    }
-                    const index = this._usedCards.indexOf(card);
-                    if (index > -1) {
-                        this._usedCards.splice(index, 1);
-                    }
-                    if (card.data.parent) {
-                        card.data.parent.removeChild(card.data);
-                    }
+        // move player container
+        this.scene.tween.add({
+            target: this._playerCards,
+            to: { x: -300 },
+            duration: 1000,
+            delay: 100,
+            easing: TWEEN.Easing.Back.InOut,
+            onComplete: () => {
+                this.scene.game.data.set('player.cards', []).writeLocal();
+
+                this._usedCards.forEach((card) => {
                     this._cardPool.release(card);
-                }
-            });
+                });
+
+                this._usedCards.length = 0;
+                this._dealerCards.removeChildren();
+                this._dealerCards.position.set(88, -30);
+                this._playerCards.removeChildren();
+                this._playerCards.position.set(88, 140);
+            }
         });
     }
     protected newCard(): Card {
-        return new Card({ back: 'EMPTY', front: 'EMPTY', type: null, subType: null, value: [0] });
+        return new Card({ back: 'EMPTY', front: 'EMPTY', type: null, subType: null, value: [0], owner: null });
     }
     protected resetCard(card: Card): Card {
         card.reset();

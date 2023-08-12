@@ -39,7 +39,7 @@ export class Wallet extends PIXI.Container implements IWallet {
         coinAnim.data.loop = true;
         coinAnim.data.scale.set(0.25);
         coinAnim.data.play();
-        coinAnim.data.position.set(5, 7);
+        coinAnim.data.position.set(5, 5);
         this.addChild(coinAnim.data);
 
         // total text
@@ -124,10 +124,11 @@ export class Wallet extends PIXI.Container implements IWallet {
         coinCount = Math.min(coinCount, 9);
 
         for (let i = 0; i < coinCount; i++) {
-            const randomX = RandomNumber(230, 330);
+            const randomX = RandomNumber(150, 250);
             const randomY = RandomNumber(320, 420);
             const anim = this._coinAnimPool.get();
             anim.data.position.set(randomX, randomY);
+            anim.data.scale.set(0.75);
             this.scene.tween.add({
                 target: anim.data,
                 to: { x: 0, y: 0 },
@@ -137,7 +138,6 @@ export class Wallet extends PIXI.Container implements IWallet {
                     anim.data.visible = true;
                     anim.data.animationSpeed = 0.5;
                     anim.data.loop = true;
-                    anim.data.scale.set(0.5);
                     anim.data.play();
                     this.addChild(anim.data);
                 },

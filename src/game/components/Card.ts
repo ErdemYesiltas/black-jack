@@ -9,11 +9,13 @@ export interface CardOptions {
     value: number | number[];
     subType: CardValues;
     type: CardTypes;
+    owner: 'dealer' | 'player';
 }
 export class Card extends PIXI.Container {
     value: number | number[] = [0];
     subType: CardValues = null;
     type: CardTypes = null;
+    owner: 'dealer' | 'player' = null;
 
     protected _backSide: PIXI.Sprite = null;
     protected _frontSide: PIXI.Sprite = null;
@@ -28,6 +30,7 @@ export class Card extends PIXI.Container {
         this.value = options.value;
         this.subType = options.subType;
         this.type = options.type;
+        this.owner = options.owner;
 
         // create card back side
         if (this._backSide === null) {
@@ -55,6 +58,7 @@ export class Card extends PIXI.Container {
         this.value = 0;
         this.subType = null;
         this.type = null;
+        this.owner = null;
     }
     open(): void {
         this._isVisible = true;

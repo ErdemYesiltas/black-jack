@@ -1904,7 +1904,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             const back = new PIXI__namespace.Graphics();
             back.name = 'BET TEXT BACKGROUND';
             back.beginFill('#1e1e1e', .5).drawRoundedRect(0, 0, 100, 30, 7).endFill();
-            back.position.set(125, -143);
+            back.position.set(185, -205);
             this.addChild(back);
             this._betText = new PIXI__namespace.Text('', {
                 fontFamily: 'Bungee Regular',
@@ -1916,7 +1916,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this._betText.position.set(50, 15);
             back.addChild(this._betText);
             this._chipPool = new ObjectPool(this.createChip, this.resetChip, 5);
-            const gap = 70;
+            const gap = 90;
             let counter = 0;
             // create main chips
             for (const texture in chips) {
@@ -1924,8 +1924,10 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                     const value = chips[texture];
                     const chip = this._chipPool.get();
                     chip.data.texture = PIXI__namespace.Texture.from(texture);
+                    chip.data.scale.set(0.5);
                     chip.data.x = gap * counter;
-                    chip.data.onclick = this.increase.bind(this, value);
+                    chip.data.y = -45;
+                    chip.data.onclick = chip.data.ontap = this.increase.bind(this, value);
                     this.addChild(chip.data);
                     this._chips[value.toString()] = { texture, value, x: chip.data.x, y: 0 };
                     this._mainChips[value.toString()] = chip.data;
@@ -1943,10 +1945,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             }
             this.scene.game.data.on('changedata', this.onBalanceChange, this);
             this.checkChips();
-            const balance = this.scene.game.data.get('balance', 0);
-            if (balance < this.bet) {
-                this.clear();
-            }
+            this.checkBalance();
         }
         clear() {
             const len = this._usedChips.length - 1;
@@ -1965,6 +1964,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
         onBalanceChange(key) {
             if (key === 'balance') {
                 this.checkChips();
+                this.checkBalance();
             }
         }
         checkChips() {
@@ -1981,6 +1981,12 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                         chip.alpha = 1;
                     }
                 }
+            }
+        }
+        checkBalance() {
+            const balance = this.scene.game.data.get('balance', 0);
+            if (balance < this.bet) {
+                this.clear();
             }
         }
         increase(chip) {
@@ -2003,14 +2009,15 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             // get new chip from pool
             const chipMember = this._chipPool.get();
             this._usedChips.push(chipMember);
-            chipMember.data.onclick = this.decrease.bind(this, chip, this._usedChips.length - 1);
+            chipMember.data.onclick = chipMember.data.ontap = this.decrease.bind(this, chip, this._usedChips.length - 1);
             chipMember.data.texture = PIXI__namespace.Texture.from(chipValue.texture);
+            chipMember.data.scale.set(0.5);
             chipMember.data.x = chipValue.x;
             chipMember.data.y = chipValue.y;
             this.addChild(chipMember.data);
             this.scene.tween.add({
                 target: chipMember.data,
-                to: { x: 143, y: -87 },
+                to: { x: 180, y: -165 },
                 duration: skipAnim ? 10 : 300,
                 easing: TWEEN__namespace.Easing.generatePow(3).Out,
                 onStart: (target) => {
@@ -2069,6 +2076,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
         resetChip(chip) {
             chip.texture = null;
             chip.onclick = null;
+            chip.ontap = null;
             chip.enabled();
             return chip;
         }
@@ -2093,6 +2101,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this.value = [0];
             this.subType = null;
             this.type = null;
+            this.owner = null;
             this._backSide = null;
             this._frontSide = null;
             this._isVisible = false;
@@ -2103,6 +2112,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this.value = options.value;
             this.subType = options.subType;
             this.type = options.type;
+            this.owner = options.owner;
             // create card back side
             if (this._backSide === null) {
                 this._backSide = new PIXI__namespace.Sprite(PIXI__namespace.Texture.from(options.back));
@@ -2129,6 +2139,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this.value = 0;
             this.subType = null;
             this.type = null;
+            this.owner = null;
         }
         open() {
             this._isVisible = true;
@@ -2174,6 +2185,18 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             // needed for tween animation
             this.scene = scene;
             this.name = 'DECK VIEW';
+            // dealer card container
+            this._dealerCards = new PIXI__namespace.Container();
+            this._dealerCards.name = 'DEALER CARDS';
+            this._dealerCards.position.set(88, -30);
+            this._dealerCards.scale.set(0.5);
+            this.addChild(this._dealerCards);
+            // player card container
+            this._playerCards = new PIXI__namespace.Container();
+            this._playerCards.name = 'PLAYER CARDS';
+            this._playerCards.position.set(88, 140);
+            this._playerCards.scale.set(0.75);
+            this.addChild(this._playerCards);
             this._options = options;
             this._cardPool = new ObjectPool(this.newCard, this.resetCard, 8);
             // fill cards
@@ -2189,7 +2212,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                     if (typeof cardTexture === 'string') {
                         cardTexture = { back: defaultBack, front: cardTexture };
                     }
-                    this._cards.push({ back: defaultBack, ...cardTexture, type: type, subType, value: this._cardValues[subType] });
+                    this._cards.push({ back: defaultBack, ...cardTexture, type: type, subType, value: this._cardValues[subType], owner: null });
                 });
             });
             this.shuffle();
@@ -2206,60 +2229,75 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                 const card = this._cardPool.get();
                 card.data.create(cardOptions);
                 card.data.alpha = 0;
-                card.data.position.set(330, -40);
-                card.data.scale.set(0.75);
-                card.data.pivot.set(60, 87);
-                card.data.angle = 0;
-                card.data.close();
+                card.data.position.set(type === 'dealer' ? 380 : 235, type === 'dealer' ? -80 : -260);
+                card.data.angle = -30;
+                card.data.pivot.set(100);
+                card.data.owner = type;
                 cards.push(card);
+                type === 'dealer' && this._dealerCards.children.length == 1 ? card.data.close() : card.data.open();
+                type === 'dealer' ? this._dealerCards.addChild(card.data) : this._playerCards.addChild(card.data);
+                const dbCards = this.scene.game.data.get(`${type}.cards`, []);
+                dbCards.push({ type: card.data.type, subType: card.data.subType, value: card.data.value });
+                this.scene.game.data.set(`${type}.cards`, dbCards).writeLocal();
+                // remove card from deck
                 this._copies.splice(randomIndex, 1);
-                this.addChild(card.data);
                 // card animation
-                const x = 60;
-                const y = type === 'dealer' ? -30 : 150;
+                const gap = type === 'dealer' ? 40 : 30;
+                const limitX = type === 'dealer' ? -320 : -180;
                 const alpha = 1;
                 const angle = -360;
                 this.scene.tween.add({
                     target: card.data,
-                    to: { x, y, angle, alpha },
+                    to: { x: 0, y: 0, angle, alpha },
                     delay: 100 * i,
                     duration: 300,
-                    onStart: () => {
-                        card.data.open();
+                    onComplete: (obj) => {
+                        const container = obj.owner === 'dealer' ? this._dealerCards : this._playerCards;
+                        const children = [...container.children];
+                        children.splice(children.indexOf(obj), 1);
+                        children.forEach((c) => {
+                            if (c.x >= limitX)
+                                c.x -= gap;
+                        });
                     }
                 });
             }
             this._usedCards.push(...cards);
             return cards;
         }
-        relase(cards) {
-            if (cards === undefined) {
-                cards = this._usedCards;
-            }
-            cards.forEach((card, i) => {
-                this.scene.tween.add({
-                    target: card.data,
-                    to: { x: -300, alpha: 0 },
-                    duration: 300,
-                    delay: 100 * i,
-                    onComplete: () => {
-                        if (card.data.parent) {
-                            card.data.parent.removeChild(card.data);
-                        }
-                        const index = this._usedCards.indexOf(card);
-                        if (index > -1) {
-                            this._usedCards.splice(index, 1);
-                        }
-                        if (card.data.parent) {
-                            card.data.parent.removeChild(card.data);
-                        }
+        relase() {
+            // move dealer container
+            this.scene.tween.add({
+                target: this._dealerCards,
+                to: { x: -300 },
+                duration: 1000,
+                easing: TWEEN__namespace.Easing.Back.InOut,
+                onComplete: () => {
+                    this.scene.game.data.set('dealer.cards', []).writeLocal();
+                }
+            });
+            // move player container
+            this.scene.tween.add({
+                target: this._playerCards,
+                to: { x: -300 },
+                duration: 1000,
+                delay: 100,
+                easing: TWEEN__namespace.Easing.Back.InOut,
+                onComplete: () => {
+                    this.scene.game.data.set('player.cards', []).writeLocal();
+                    this._usedCards.forEach((card) => {
                         this._cardPool.release(card);
-                    }
-                });
+                    });
+                    this._usedCards.length = 0;
+                    this._dealerCards.removeChildren();
+                    this._dealerCards.position.set(88, -30);
+                    this._playerCards.removeChildren();
+                    this._playerCards.position.set(88, 140);
+                }
             });
         }
         newCard() {
-            return new Card({ back: 'EMPTY', front: 'EMPTY', type: null, subType: null, value: [0] });
+            return new Card({ back: 'EMPTY', front: 'EMPTY', type: null, subType: null, value: [0], owner: null });
         }
         resetCard(card) {
             card.reset();
@@ -2295,7 +2333,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             coinAnim.data.loop = true;
             coinAnim.data.scale.set(0.25);
             coinAnim.data.play();
-            coinAnim.data.position.set(5, 7);
+            coinAnim.data.position.set(5, 5);
             this.addChild(coinAnim.data);
             // total text
             this._totalText = new PIXI__namespace.Text('', {
@@ -2374,10 +2412,11 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             let coinCount = Math.round(value / 100);
             coinCount = Math.min(coinCount, 9);
             for (let i = 0; i < coinCount; i++) {
-                const randomX = RandomNumber(230, 330);
+                const randomX = RandomNumber(150, 250);
                 const randomY = RandomNumber(320, 420);
                 const anim = this._coinAnimPool.get();
                 anim.data.position.set(randomX, randomY);
+                anim.data.scale.set(0.75);
                 this.scene.tween.add({
                     target: anim.data,
                     to: { x: 0, y: 0 },
@@ -2387,7 +2426,6 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                         anim.data.visible = true;
                         anim.data.animationSpeed = 0.5;
                         anim.data.loop = true;
-                        anim.data.scale.set(0.5);
                         anim.data.play();
                         this.addChild(anim.data);
                     },
@@ -2420,9 +2458,9 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             // safe area
             const safeArea = new PIXI__namespace.Graphics();
             safeArea.name = 'SAFE AREA';
-            safeArea.position.set(240, 60);
-            safeArea.beginFill('#000000', .3).lineStyle({ width: 5 }).drawRect(0, 0, 800, 600).endFill();
-            this.addChild(safeArea);
+            safeArea.position.set(45, 60);
+            safeArea.beginFill('#000000', .3).lineStyle({ width: 5 }).drawRect(0, 0, 450, 600).endFill();
+            //this.addChild(safeArea);
         }
     }
 
@@ -2432,23 +2470,26 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             const config = PIXI__namespace.Cache.get('blackjack');
             // create wallet
             const wallet = new Wallet(this, this.game.data.get('balance', 1000));
-            wallet.position.set(240, 60);
+            wallet.position.set(45, 60);
             this.addChild(wallet);
             // create bet panel
             const betPanel = new BetPanel(this, config.chips);
-            betPanel.position.set(465, 580);
+            betPanel.position.set(35, 580);
             this.addChild(betPanel);
             this._deck = new Deck(this, config.deck);
-            this._deck.position.set(580, 210);
+            this._deck.position.set(180, 165);
             this.addChild(this._deck);
-            this._hitButton.onclick = () => {
+            this._hitButton.onclick = this._hitButton.ontap = () => {
                 this._deck.hit(1, 'player');
             };
-            this._standButton.onclick = () => {
+            this._standButton.onclick = this._standButton.ontap = () => {
                 this._deck.hit(1, 'dealer');
             };
-            this._dealButton.onclick = () => {
+            this._dealButton.onclick = this._dealButton.ontap = () => {
                 this._deck.relase();
+            };
+            this._betClearButton.onclick = this._betClearButton.ontap = () => {
+                betPanel.clear();
             };
         }
     }
@@ -2478,8 +2519,8 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
         onAssetLoadComplete() {
             // start inital scenes
             this.game.scene.start('BackgroundScene');
-            //this.game.scene.start('MenuScene');
-            this.game.scene.start('GameScene');
+            this.game.scene.start('MenuScene');
+            //this.game.scene.start('GameScene');
             // stop and remove this scene
             this.game.scene.stop('LoadingScene');
         }
@@ -2492,8 +2533,8 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                 this.game.data.set('balance', 1000);
                 this.game.data.set('bet', 0);
                 this.game.data.set('chips', []);
-                this.game.data.set('dealer.cards', {});
-                this.game.data.set('player.cards', {});
+                this.game.data.set('dealer.cards', []);
+                this.game.data.set('player.cards', []);
                 this.game.data.set('options.music', true);
                 this.game.data.set('options.sound', true);
                 this.game.data.set('statistic.win', 0);
@@ -2508,7 +2549,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this.game.data.readLocal();
         }
         create() {
-            this._startButton.onclick = this.onStartClick.bind(this);
+            this._startButton.onclick = this._startButton.ontap = this.onStartClick.bind(this);
         }
         // event listeners
         onSleep() {

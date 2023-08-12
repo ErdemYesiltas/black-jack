@@ -5,18 +5,13 @@
   "savePath": "C:\\Users\\Erdem\\OneDrive\\Masaüstü\\Blackjack\\assets\\exports\\low",
   "images": [
     {
-      "name": "card_box_bottom.png",
-      "path": "C:/Users/Erdem/OneDrive/Masaüstü/Blackjack/assets/images/card_box_bottom.png",
+      "name": "deck.png",
+      "path": "C:/Users/Erdem/OneDrive/Masaüstü/Blackjack/assets/images/deck.png",
       "folder": ""
     },
     {
-      "name": "card_box_top.png",
-      "path": "C:/Users/Erdem/OneDrive/Masaüstü/Blackjack/assets/images/card_box_top.png",
-      "folder": ""
-    },
-    {
-      "name": "table.png",
-      "path": "C:/Users/Erdem/OneDrive/Masaüstü/Blackjack/assets/images/table.png",
+      "name": "table.jpg",
+      "path": "C:/Users/Erdem/OneDrive/Masaüstü/Blackjack/assets/images/table.jpg",
       "folder": ""
     }
   ],

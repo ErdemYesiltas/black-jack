@@ -24,7 +24,7 @@ export class BetPanel extends PIXI.Container {
         const back = new PIXI.Graphics();
         back.name = 'BET TEXT BACKGROUND';
         back.beginFill('#1e1e1e', .5).drawRoundedRect(0, 0, 100, 30, 7).endFill();
-        back.position.set(125, -143);
+        back.position.set(185, -205);
         this.addChild(back);
 
         this._betText = new PIXI.Text('', {
@@ -38,7 +38,7 @@ export class BetPanel extends PIXI.Container {
         back.addChild(this._betText);
 
         this._chipPool = new ObjectPool(this.createChip, this.resetChip, 5);
-        const gap = 70;
+        const gap = 90;
         let counter = 0;
 
         // create main chips
@@ -48,8 +48,10 @@ export class BetPanel extends PIXI.Container {
 
                 const chip = this._chipPool.get();
                 chip.data.texture = PIXI.Texture.from(texture);
+                chip.data.scale.set(0.5);
                 chip.data.x = gap * counter;
-                chip.data.onclick = this.increase.bind(this, value);
+                chip.data.y = -45;
+                chip.data.onclick = chip.data.ontap = this.increase.bind(this, value);
                 this.addChild(chip.data);
 
                 this._chips[value.toString()] = { texture, value, x: chip.data.x, y: 0 };
@@ -71,11 +73,7 @@ export class BetPanel extends PIXI.Container {
 
         this.scene.game.data.on('changedata', this.onBalanceChange, this);
         this.checkChips();
-
-        const balance = this.scene.game.data.get('balance', 0);
-        if (balance < this.bet) {
-            this.clear();
-        }
+        this.checkBalance();
     }
     clear(): void {
 
@@ -94,6 +92,7 @@ export class BetPanel extends PIXI.Container {
     protected onBalanceChange(key: string): void {
         if (key === 'balance') {
             this.checkChips();
+            this.checkBalance();
         }
     }
     protected checkChips(): void {
@@ -110,6 +109,12 @@ export class BetPanel extends PIXI.Container {
                     chip.alpha = 1;
                 }
             }
+        }
+    }
+    protected checkBalance(): void {
+        const balance = this.scene.game.data.get('balance', 0);
+        if (balance < this.bet) {
+            this.clear();
         }
     }
     protected increase(chip: number): void {
@@ -134,15 +139,16 @@ export class BetPanel extends PIXI.Container {
         // get new chip from pool
         const chipMember = this._chipPool.get();
         this._usedChips.push(chipMember);
-        chipMember.data.onclick = this.decrease.bind(this, chip, this._usedChips.length - 1);
+        chipMember.data.onclick = chipMember.data.ontap = this.decrease.bind(this, chip, this._usedChips.length - 1);
         chipMember.data.texture = PIXI.Texture.from(chipValue.texture);
+        chipMember.data.scale.set(0.5);
         chipMember.data.x = chipValue.x;
         chipMember.data.y = chipValue.y;
         this.addChild(chipMember.data);
 
         this.scene.tween.add({
             target: chipMember.data,
-            to: { x: 143, y: -87 },
+            to: { x: 180, y: -165 },
             duration: skipAnim ? 10 : 300,
             easing: TWEEN.Easing.generatePow(3).Out,
             onStart: (target: any) => {
@@ -206,6 +212,7 @@ export class BetPanel extends PIXI.Container {
     protected resetChip(chip: SpriteButton): SpriteButton {
         chip.texture = null;
         chip.onclick = null;
+        chip.ontap = null;
         chip.enabled();
 
         return chip;
