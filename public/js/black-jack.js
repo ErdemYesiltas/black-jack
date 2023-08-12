@@ -2590,6 +2590,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
     });
 
     window.onload = () => {
+        window.screen.orientation.lock('portrait-primary');
         PIXI__namespace.Assets.load({ src: 'misc/game.json', loadParser: 'loadJson' }).then((file) => {
             Init(file);
         });
