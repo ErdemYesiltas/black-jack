@@ -4,12 +4,7 @@ import { Scene } from '../../engine/scene';
 import { ObjectPool } from '../../engine/data';
 import { RandomNumber } from '../../engine/utils';
 
-export class IWallet {
-    total: number;
-    deposit: (value: number, skipAnim?: boolean) => void;
-    withdraw: (value: number, skipAnim?: boolean) => boolean;
-}
-export class Wallet extends PIXI.Container implements IWallet {
+export class Wallet extends PIXI.Container {
     scene: Scene;
     protected _total = 0;
     protected _totalText: PIXI.Text;

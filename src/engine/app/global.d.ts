@@ -1,7 +1,7 @@
 declare namespace GlobalMixins {
     interface Application {
         data: import('../data').DataManager;
-        scene: import('../scene').SceneManager
+        scene: import('../scene').SceneManager;
         safeWidth: number;
         safeHeight: number;
         left: number;

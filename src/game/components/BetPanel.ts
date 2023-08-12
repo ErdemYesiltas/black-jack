@@ -24,7 +24,7 @@ export class BetPanel extends PIXI.Container {
         const back = new PIXI.Graphics();
         back.name = 'BET TEXT BACKGROUND';
         back.beginFill('#1e1e1e', .5).drawRoundedRect(0, 0, 100, 30, 7).endFill();
-        back.position.set(185, -205);
+        back.position.set(165, -225);
         this.addChild(back);
 
         this._betText = new PIXI.Text('', {
@@ -36,6 +36,23 @@ export class BetPanel extends PIXI.Container {
         this._betText.anchor.set(0.5);
         this._betText.position.set(50, 15);
         back.addChild(this._betText);
+
+        const clearBtn = new SpriteButton({
+            texture: 'buttons/clean',
+            up: '#ffffff',
+            enter: '#dddddd',
+            down: '#aaaaaa',
+            disable: '#555555',
+            type: 'tint'
+        });
+        clearBtn.name = 'BET CLEAR BUTTON';
+        clearBtn.position.set(135, -140);
+        clearBtn.scale.set(0.5);
+        clearBtn.anchor.set(0.5);
+        this.addChild(clearBtn);
+        clearBtn.onclick = clearBtn.ontap = () => {
+            this.clear();
+        };
 
         this._chipPool = new ObjectPool(this.createChip, this.resetChip, 5);
         const gap = 90;
@@ -76,7 +93,6 @@ export class BetPanel extends PIXI.Container {
         this.checkBalance();
     }
     clear(): void {
-
         const len = this._usedChips.length - 1;
         for (let i = len; i >= 0; i--) {
             if ((len - i) <= 5) {
@@ -148,7 +164,7 @@ export class BetPanel extends PIXI.Container {
 
         this.scene.tween.add({
             target: chipMember.data,
-            to: { x: 180, y: -165 },
+            to: { x: 180, y: -175 },
             duration: skipAnim ? 10 : 300,
             easing: TWEEN.Easing.generatePow(3).Out,
             onStart: (target: any) => {

@@ -2,7 +2,7 @@
   "meta": {
     "version": "0.6.7"
   },
-  "savePath": "C:\\Users\\Erdem\\OneDrive\\Masaüstü\\Blackjack\\assets\\exports\\low",
+  "savePath": "C:\\Users\\Erdem\\OneDrive\\Masaüstü\\Blackjack\\assets\\exports\\high",
   "images": [
     {
       "name": "deck.png",
@@ -10,8 +10,8 @@
       "folder": ""
     },
     {
-      "name": "table.jpg",
-      "path": "C:/Users/Erdem/OneDrive/Masaüstü/Blackjack/assets/images/table.jpg",
+      "name": "table.png",
+      "path": "C:/Users/Erdem/OneDrive/Masaüstü/Blackjack/assets/images/table.png",
       "folder": ""
     }
   ],
@@ -27,13 +27,13 @@
     "removeFileExtension": true,
     "prependFolderName": true,
     "base64Export": false,
-    "tinify": true,
+    "tinify": false,
     "tinifyKey": "3kPBPwYPkTNmyXsHYy9XPDDjH33ytR1l",
     "scale": 1,
     "filter": "none",
     "exporter": "JSON (hash)",
     "fileName": "pack-result",
-    "savePath": "C:\\Users\\Erdem\\OneDrive\\Masaüstü\\Blackjack\\assets\\exports\\low",
+    "savePath": "C:\\Users\\Erdem\\OneDrive\\Masaüstü\\Blackjack\\assets\\exports\\high",
     "width": 2048,
     "height": 2048,
     "fixedSize": false,

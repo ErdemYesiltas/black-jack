@@ -6,7 +6,7 @@ body {
     min-width: 100vw;
     min-height: 100vh;
     overflow: hidden;
-    background-color: #1a774b;
+    background: radial-gradient(#5b9c66, #166e44);
 }
 
 #game {
@@ -17,3 +17,10 @@ body {
     min-width: 100%;
     min-height: 100%;
 }
+
+/* @media only screen and (orientation:portrait) {
+    body {
+        height: 100vw;
+        transform: rotate(90deg);
+    }
+} */

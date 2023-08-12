@@ -5,7 +5,6 @@ export class LoadingScene extends Scene {
     protected _loadingBar: PIXI.Graphics;
 
     create(): void {
-        const prefix = PIXI.isMobile.phone ? 'low' : 'high';
         PIXI.Assets.addBundle('initial-assets', [
             {
                 name: 'Bungee Regular',
@@ -13,7 +12,7 @@ export class LoadingScene extends Scene {
             },
             {
                 name: 'spritesheet',
-                srcs: `sprites/${prefix}/sprites.json`
+                srcs: 'sprites/sprites.json'
             }
         ]);
 
@@ -29,8 +28,8 @@ export class LoadingScene extends Scene {
     onAssetLoadComplete(): void {
         // start inital scenes
         this.game.scene.start('BackgroundScene');
-        this.game.scene.start('MenuScene');
-        //this.game.scene.start('GameScene');
+        //this.game.scene.start('MenuScene');
+        this.game.scene.start('GameScene');
         // stop and remove this scene
         this.game.scene.stop('LoadingScene');
     }

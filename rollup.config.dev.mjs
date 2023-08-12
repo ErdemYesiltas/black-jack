@@ -6,7 +6,6 @@ export default {
     external: [
         'pixi.js',
         'pixi-spine',
-        'howler',
         '@tweenjs/tween.js'
     ],
     input: [
@@ -20,7 +19,6 @@ export default {
         globals: {
             'pixi.js': 'PIXI',
             'pixi-spine': 'PIXI.spine',
-            'howler': 'HowlerJS',
             '@tweenjs/tween.js': 'TWEEN'
         }
     },

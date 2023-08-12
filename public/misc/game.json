@@ -1,8 +1,8 @@
 {
     "hello": true,
-    "backgroundColor": "#1a774b",
+    "backgroundColor": "#166e44",
     "debug": true,
-    "width": 540,
+    "width": 1280,
     "height": 720,
     "safeWidth": 450,
     "safeHeight": 600,
@@ -17,8 +17,8 @@
                     "name": "boot-assets",
                     "assets": [
                         {
-                            "name": "logo",
-                            "srcs": "images/logo.png"
+                            "name": "splash",
+                            "srcs": "images/splash.png"
                         },
                         {
                             "name": "EMPTY",
@@ -30,10 +30,10 @@
             "map": [
                 {
                     "identity": "sprite",
-                    "texture": "logo",
-                    "name": "BLACKJACK LOGO",
-                    "x": 270,
-                    "y": 270,
+                    "texture": "splash",
+                    "name": "SPLASH BACKGROUND",
+                    "x": 640,
+                    "y": 360,
                     "anchorX": 0.5,
                     "anchorY": 0.5
                 },
@@ -49,8 +49,36 @@
                         },
                         "width": 320
                     },
-                    "x": 110,
-                    "y": 370
+                    "x": 480,
+                    "y": 430
+                }
+            ]
+        },
+        {
+            "key": "BackgroundScene",
+            "className": "App.Game.Scenes.BackgroundScene",
+            "active": false,
+            "map": [
+                {
+                    "identity": "sprite",
+                    "texture": "table",
+                    "name": "BACKGROUND",
+                    "x": 640,
+                    "y": 360,
+                    "anchorX": 0.5,
+                    "anchorY": 0.5
+                },
+                {
+                    "identity": "sprite",
+                    "texture": "deck",
+                    "name": "DECK",
+                    "x": 840,
+                    "y": 90,
+                    "angle": -30,
+                    "anchorX": 0.5,
+                    "anchorY": 0.5,
+                    "scaleX": 0.5,
+                    "scaleY": 0.5
                 }
             ]
         },
@@ -64,8 +92,10 @@
                     "localName": "_startButton",
                     "texture": "buttons/start",
                     "name": "START BUTTON",
-                    "x": 165,
-                    "y": 300,
+                    "x": 640,
+                    "y": 360,
+                    "anchorX": 0.5,
+                    "anchorY": 0.5,
                     "up": "#ffffff",
                     "enter": "#dddddd",
                     "down": "#aaaaaa",
@@ -77,8 +107,7 @@
                             "text": "START",
                             "anchorX": 0.5,
                             "anchorY": 0.5,
-                            "x": 112,
-                            "y": 35,
+                            "y": -5,
                             "style": {
                                 "fontFamily": "Bungee Regular",
                                 "fill": "#ffffff",
@@ -93,8 +122,10 @@
                     "localName": "_settingButton",
                     "texture": "buttons/settings",
                     "name": "SETTINGS BUTTON",
-                    "x": 48,
-                    "y": 62,
+                    "x": 460,
+                    "y": 106,
+                    "anchorX": 0.5,
+                    "anchorY": 0.5,
                     "up": "#ffffff",
                     "enter": "#dddddd",
                     "down": "#aaaaaa",
@@ -106,41 +137,15 @@
                     "localName": "_homeButton",
                     "texture": "buttons/home",
                     "name": "HOME BUTTON",
-                    "x": 48,
-                    "y": 139,
+                    "x": 460,
+                    "y": 183,
+                    "anchorX": 0.5,
+                    "anchorY": 0.5,
                     "up": "#ffffff",
                     "enter": "#dddddd",
                     "down": "#aaaaaa",
                     "disable": "#555555",
                     "type": "tint"
-                }
-            ]
-        },
-        {
-            "key": "BackgroundScene",
-            "className": "App.Game.Scenes.BackgroundScene",
-            "active": false,
-            "map": [
-                {
-                    "identity": "sprite",
-                    "texture": "table",
-                    "name": "BACKGROUND",
-                    "x": 270,
-                    "y": 360,
-                    "anchorX": 0.5,
-                    "anchorY": 0.5
-                },
-                {
-                    "identity": "sprite",
-                    "texture": "deck",
-                    "name": "DECK",
-                    "x": 450,
-                    "y": 100,
-                    "angle": -30,
-                    "anchorX": 0.5,
-                    "anchorY": 0.5,
-                    "scaleX": 0.5,
-                    "scaleY": 0.5
                 }
             ]
         },
@@ -166,8 +171,10 @@
                     "localName": "_hitButton",
                     "texture": "buttons/hit",
                     "name": "HIT BUTTON",
-                    "x": 375,
-                    "y": 300,
+                    "x": 800,
+                    "y": 330,
+                    "anchorX": 0.5,
+                    "anchorY": 0.5,
                     "up": "#ffffff",
                     "enter": "#dddddd",
                     "down": "#aaaaaa",
@@ -181,8 +188,7 @@
                             "text": "HIT",
                             "anchorX": 0.5,
                             "anchorY": 0.5,
-                            "x": 112,
-                            "y": 35,
+                            "y": 2,
                             "style": {
                                 "fontFamily": "Bungee Regular",
                                 "fill": "#ffffff",
@@ -197,8 +203,10 @@
                     "localName": "_standButton",
                     "texture": "buttons/stand",
                     "name": "STAND BUTTON",
-                    "x": 375,
-                    "y": 350,
+                    "x": 800,
+                    "y": 380,
+                    "anchorX": 0.5,
+                    "anchorY": 0.5,
                     "up": "#ffffff",
                     "enter": "#dddddd",
                     "down": "#aaaaaa",
@@ -212,8 +220,7 @@
                             "text": "STAND",
                             "anchorX": 0.5,
                             "anchorY": 0.5,
-                            "x": 112,
-                            "y": 35,
+                            "y": 2,
                             "style": {
                                 "fontFamily": "Bungee Regular",
                                 "fill": "#ffffff",
@@ -228,8 +235,10 @@
                     "localName": "_dealButton",
                     "texture": "buttons/deal",
                     "name": "DEAL BUTTON",
-                    "x": 375,
-                    "y": 400,
+                    "x": 800,
+                    "y": 430,
+                    "anchorX": 0.5,
+                    "anchorY": 0.5,
                     "up": "#ffffff",
                     "enter": "#dddddd",
                     "down": "#aaaaaa",
@@ -243,43 +252,11 @@
                             "text": "DEAL",
                             "anchorX": 0.5,
                             "anchorY": 0.5,
-                            "x": 112,
-                            "y": 35,
+                            "y": 2,
                             "style": {
                                 "fontFamily": "Bungee Regular",
                                 "fill": "#ffffff",
                                 "fontSize": 40,
-                                "align": "center"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "identity": "spritebutton",
-                    "localName": "_betClearButton",
-                    "texture": "buttons/start",
-                    "name": "BET CLEAR BUTTON",
-                    "x": 375,
-                    "y": 450,
-                    "up": "#ffffff",
-                    "enter": "#dddddd",
-                    "down": "#aaaaaa",
-                    "disable": "#555555",
-                    "type": "tint",
-                    "scaleX": 0.5,
-                    "scaleY": 0.5,
-                    "children": [
-                        {
-                            "identity": "text",
-                            "text": "BET CLEAR",
-                            "anchorX": 0.5,
-                            "anchorY": 0.5,
-                            "x": 112,
-                            "y": 35,
-                            "style": {
-                                "fontFamily": "Bungee Regular",
-                                "fill": "#ffffff",
-                                "fontSize": 30,
                                 "align": "center"
                             }
                         }

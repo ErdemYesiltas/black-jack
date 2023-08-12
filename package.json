@@ -17,7 +17,6 @@
   "license": "MIT",
   "dependencies": {
     "@tweenjs/tween.js": "^21.0.0",
-    "howler": "^2.2.3",
     "pixi-spine": "^4.0.4",
     "pixi.js": "^7.2.4"
   },

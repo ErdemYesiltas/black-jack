@@ -2,3 +2,4 @@
 * butonlara tint ekle
 * componentlere destroy ekle
 * bet paneline clean bet butonu ekle
+* full screen ve lock ekle

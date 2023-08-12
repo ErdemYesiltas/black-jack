@@ -1904,7 +1904,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             const back = new PIXI__namespace.Graphics();
             back.name = 'BET TEXT BACKGROUND';
             back.beginFill('#1e1e1e', .5).drawRoundedRect(0, 0, 100, 30, 7).endFill();
-            back.position.set(185, -205);
+            back.position.set(165, -225);
             this.addChild(back);
             this._betText = new PIXI__namespace.Text('', {
                 fontFamily: 'Bungee Regular',
@@ -1915,6 +1915,22 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this._betText.anchor.set(0.5);
             this._betText.position.set(50, 15);
             back.addChild(this._betText);
+            const clearBtn = new SpriteButton({
+                texture: 'buttons/clean',
+                up: '#ffffff',
+                enter: '#dddddd',
+                down: '#aaaaaa',
+                disable: '#555555',
+                type: 'tint'
+            });
+            clearBtn.name = 'BET CLEAR BUTTON';
+            clearBtn.position.set(135, -140);
+            clearBtn.scale.set(0.5);
+            clearBtn.anchor.set(0.5);
+            this.addChild(clearBtn);
+            clearBtn.onclick = clearBtn.ontap = () => {
+                this.clear();
+            };
             this._chipPool = new ObjectPool(this.createChip, this.resetChip, 5);
             const gap = 90;
             let counter = 0;
@@ -2017,7 +2033,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this.addChild(chipMember.data);
             this.scene.tween.add({
                 target: chipMember.data,
-                to: { x: 180, y: -165 },
+                to: { x: 180, y: -175 },
                 duration: skipAnim ? 10 : 300,
                 easing: TWEEN__namespace.Easing.generatePow(3).Out,
                 onStart: (target) => {
@@ -2188,7 +2204,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             // dealer card container
             this._dealerCards = new PIXI__namespace.Container();
             this._dealerCards.name = 'DEALER CARDS';
-            this._dealerCards.position.set(88, -30);
+            this._dealerCards.position.set(88, -20);
             this._dealerCards.scale.set(0.5);
             this.addChild(this._dealerCards);
             // player card container
@@ -2269,9 +2285,9 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             // move dealer container
             this.scene.tween.add({
                 target: this._dealerCards,
-                to: { x: -300 },
+                to: { x: -200, alpha: 0 },
                 duration: 1000,
-                easing: TWEEN__namespace.Easing.Back.InOut,
+                easing: TWEEN__namespace.Easing.Back.In,
                 onComplete: () => {
                     this.scene.game.data.set('dealer.cards', []).writeLocal();
                 }
@@ -2279,10 +2295,10 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             // move player container
             this.scene.tween.add({
                 target: this._playerCards,
-                to: { x: -300 },
+                to: { x: -200, alpha: 0 },
                 duration: 1000,
                 delay: 100,
-                easing: TWEEN__namespace.Easing.Back.InOut,
+                easing: TWEEN__namespace.Easing.Back.In,
                 onComplete: () => {
                     this.scene.game.data.set('player.cards', []).writeLocal();
                     this._usedCards.forEach((card) => {
@@ -2290,9 +2306,11 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                     });
                     this._usedCards.length = 0;
                     this._dealerCards.removeChildren();
-                    this._dealerCards.position.set(88, -30);
+                    this._dealerCards.position.set(88, -20);
+                    this._dealerCards.alpha = 1;
                     this._playerCards.removeChildren();
                     this._playerCards.position.set(88, 140);
+                    this._playerCards.alpha = 1;
                 }
             });
         }
@@ -2309,8 +2327,6 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
         }
     }
 
-    class IWallet {
-    }
     class Wallet extends PIXI__namespace.Container {
         constructor(scene, money) {
             super();
@@ -2447,18 +2463,17 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
         BetPanel: BetPanel,
         Card: Card,
         Deck: Deck,
-        IWallet: IWallet,
         SpriteButton: SpriteButton,
         Wallet: Wallet
     });
 
     class BackgroundScene extends Scene {
         create() {
-            this.game.scene.sendToBack(this.key);
+            //this.game.scene.sendToBack(this.key);
             // safe area
             const safeArea = new PIXI__namespace.Graphics();
             safeArea.name = 'SAFE AREA';
-            safeArea.position.set(45, 60);
+            safeArea.position.set(415, 60);
             safeArea.beginFill('#000000', .3).lineStyle({ width: 5 }).drawRect(0, 0, 450, 600).endFill();
             //this.addChild(safeArea);
         }
@@ -2470,14 +2485,14 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             const config = PIXI__namespace.Cache.get('blackjack');
             // create wallet
             const wallet = new Wallet(this, this.game.data.get('balance', 1000));
-            wallet.position.set(45, 60);
+            wallet.position.set(425, 70);
             this.addChild(wallet);
             // create bet panel
             const betPanel = new BetPanel(this, config.chips);
-            betPanel.position.set(35, 580);
+            betPanel.position.set(425, 600);
             this.addChild(betPanel);
             this._deck = new Deck(this, config.deck);
-            this._deck.position.set(180, 165);
+            this._deck.position.set(550, 170);
             this.addChild(this._deck);
             this._hitButton.onclick = this._hitButton.ontap = () => {
                 this._deck.hit(1, 'player');
@@ -2488,15 +2503,11 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this._dealButton.onclick = this._dealButton.ontap = () => {
                 this._deck.relase();
             };
-            this._betClearButton.onclick = this._betClearButton.ontap = () => {
-                betPanel.clear();
-            };
         }
     }
 
     class LoadingScene extends Scene {
         create() {
-            const prefix = PIXI__namespace.isMobile.phone ? 'low' : 'high';
             PIXI__namespace.Assets.addBundle('initial-assets', [
                 {
                     name: 'Bungee Regular',
@@ -2504,7 +2515,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                 },
                 {
                     name: 'spritesheet',
-                    srcs: `sprites/${prefix}/sprites.json`
+                    srcs: 'sprites/sprites.json'
                 }
             ]);
             PIXI__namespace.Assets.loadBundle('initial-assets', this.onProgress.bind(this)).then(this.onAssetLoadComplete.bind(this));
@@ -2519,8 +2530,8 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
         onAssetLoadComplete() {
             // start inital scenes
             this.game.scene.start('BackgroundScene');
-            this.game.scene.start('MenuScene');
-            //this.game.scene.start('GameScene');
+            //this.game.scene.start('MenuScene');
+            this.game.scene.start('GameScene');
             // stop and remove this scene
             this.game.scene.stop('LoadingScene');
         }
@@ -2590,7 +2601,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
     });
 
     window.onload = () => {
-        window.screen.orientation.lock('portrait-primary');
+        //window.screen.orientation.lock('portrait-primary');
         PIXI__namespace.Assets.load({ src: 'misc/game.json', loadParser: 'loadJson' }).then((file) => {
             Init(file);
         });

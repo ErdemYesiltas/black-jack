@@ -43,7 +43,7 @@ export class Deck extends PIXI.Container {
         // dealer card container
         this._dealerCards = new PIXI.Container();
         this._dealerCards.name = 'DEALER CARDS';
-        this._dealerCards.position.set(88, -30);
+        this._dealerCards.position.set(88, -20);
         this._dealerCards.scale.set(0.5);
         this.addChild(this._dealerCards);
 
@@ -136,9 +136,9 @@ export class Deck extends PIXI.Container {
         // move dealer container
         this.scene.tween.add({
             target: this._dealerCards,
-            to: { x: -300 },
+            to: { x: -200, alpha: 0 },
             duration: 1000,
-            easing: TWEEN.Easing.Back.InOut,
+            easing: TWEEN.Easing.Back.In,
             onComplete: () => {
                 this.scene.game.data.set('dealer.cards', []).writeLocal();
             }
@@ -147,10 +147,10 @@ export class Deck extends PIXI.Container {
         // move player container
         this.scene.tween.add({
             target: this._playerCards,
-            to: { x: -300 },
+            to: { x: -200, alpha: 0 },
             duration: 1000,
             delay: 100,
-            easing: TWEEN.Easing.Back.InOut,
+            easing: TWEEN.Easing.Back.In,
             onComplete: () => {
                 this.scene.game.data.set('player.cards', []).writeLocal();
 
@@ -160,9 +160,11 @@ export class Deck extends PIXI.Container {
 
                 this._usedCards.length = 0;
                 this._dealerCards.removeChildren();
-                this._dealerCards.position.set(88, -30);
+                this._dealerCards.position.set(88, -20);
+                this._dealerCards.alpha = 1;
                 this._playerCards.removeChildren();
                 this._playerCards.position.set(88, 140);
+                this._playerCards.alpha = 1;
             }
         });
     }

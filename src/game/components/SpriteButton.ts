@@ -10,13 +10,7 @@ export interface SpriteButtonOptions extends GameObjectConfig {
     isEnabled?: boolean,
     type: 'texture' | 'tint'
 }
-export interface IButton {
-    isDisabled: boolean;
-    onclick: (event: PIXI.FederatedPointerEvent) => void;
-    disabled: () => void;
-    enabled: () => void;
-}
-export class SpriteButton extends PIXI.Sprite implements IButton {
+export class SpriteButton extends PIXI.Sprite {
     protected _up: string;
     protected _enter: string;
     protected _leave: string;
