@@ -11,7 +11,7 @@ export class MenuScene extends Scene {
             this.resetSession();
         }
 
-        this.game.data.readLocal();
+        this.game.data.load();
         this.on('wokeup', this.onWokeUp, this);
     }
     create(): void {
@@ -24,13 +24,14 @@ export class MenuScene extends Scene {
         this.game.data.set('sessionID', PIXI.utils.uid());
         this.game.data.set('started', false);
         this.game.data.set('state', 'deal');
-        this.game.data.set('balance', 1000);
+        this.game.data.set('balance', 10);
+        this.game.data.set('reserved', 0);
         this.game.data.set('bet', 0);
         this.game.data.set('chips', []);
         this.game.data.set('deck', []);
+        this.game.data.set('revealed', false);
         this.game.data.set('dealer', []);
         this.game.data.set('player', []);
-        this.game.data.set('ace', 'both');
         this.game.data.set('options.music', true);
         this.game.data.set('options.sound', true);
         this.game.data.set('statistic.win', 0);
@@ -39,9 +40,7 @@ export class MenuScene extends Scene {
         this.game.data.set('statistic.history', []);
         this.game.data.set('statistic.total.win', 0);
         this.game.data.set('statistic.total.lost', 0);
-        this.game.data.set('statistic.total.bet', 0);
-
-        this.game.data.writeLocal();
+        this.game.data.save();
     }
     protected checkButtons(): void {
         const isStarted = this.game.data.get('started', false);
@@ -53,11 +52,14 @@ export class MenuScene extends Scene {
         this._startButton.disabled();
     }
     protected onWokeUp(): void {
+        if (!this.game.data.hasLocalRecord()) {
+            this.resetSession();
+        }
         this._startButton.enabled();
         this.checkButtons();
     }
     protected onStartClick(): void {
-        this.game.data.set('started', true).writeLocal();
+        this.game.data.set('started', true).save();
         this.game.scene.sleep(this.key);
         this.game.scene.start('GameScene');
     }

@@ -12,12 +12,14 @@ export interface DeckOptions {
 export class Deck extends PIXI.Container {
     scene: Scene;
     isLocked = false;
-    protected _playerCards: PIXI.Container;
-    protected _dealerCards: PIXI.Container;
+    pCards: Card[] = [];
+    dCards: Card[] = [];
+    copies: CardOptions[] = [];
+    protected _pCardsC: PIXI.Container;
+    protected _dCardsC: PIXI.Container;
     protected _options: DeckOptions;
     protected _cardPool: ObjectPool<Card>;
     protected _cards: CardOptions[] = [];
-    protected _copies: CardOptions[] = [];
     protected _usedCards: ObjectPoolMember<Card>[] = [];
 
     constructor(scene: Scene, options: DeckOptions) {
@@ -27,18 +29,18 @@ export class Deck extends PIXI.Container {
         this.name = 'DECK VIEW';
 
         // dealer card container
-        this._dealerCards = new PIXI.Container();
-        this._dealerCards.name = 'DEALER CARDS';
-        this._dealerCards.position.set(88, -20);
-        this._dealerCards.scale.set(0.5);
-        this.addChild(this._dealerCards);
+        this._dCardsC = new PIXI.Container();
+        this._dCardsC.name = 'DEALER CARDS';
+        this._dCardsC.position.set(88, -20);
+        this._dCardsC.scale.set(0.5);
+        this.addChild(this._dCardsC);
 
         // player card container
-        this._playerCards = new PIXI.Container();
-        this._playerCards.name = 'PLAYER CARDS';
-        this._playerCards.position.set(88, 140);
-        this._playerCards.scale.set(0.75);
-        this.addChild(this._playerCards);
+        this._pCardsC = new PIXI.Container();
+        this._pCardsC.name = 'PLAYER CARDS';
+        this._pCardsC.position.set(88, 140);
+        this._pCardsC.scale.set(0.75);
+        this.addChild(this._pCardsC);
 
         this._options = options;
         this._cardPool = new ObjectPool(this.newCard, this.resetCard, 8);
@@ -66,22 +68,22 @@ export class Deck extends PIXI.Container {
     }
     sync(): void {
         // sync variables
-        const dbDealerCards = this.scene.game.data.get('dealer', []);
-        const dbPlayerCards = this.scene.game.data.get('player', []);
+        const dbDCards = this.scene.game.data.get('dealer', []);
+        const dbPCards = this.scene.game.data.get('player', []);
 
-        if (dbDealerCards.length > 0 || dbPlayerCards.length > 0) {
-            this._copies = this.scene.game.data.get('deck', []);
-            const cards = dbDealerCards.concat(dbPlayerCards);
-            const playerLen = dbPlayerCards.length - 1;
-            const dealerLen = dbDealerCards.length - 1;
-            let playerCounter = 0;
-            let dealerCounter = 0;
+        if (dbDCards.length > 0 || dbPCards.length > 0) {
+            this.copies = this.scene.game.data.get('deck', []);
+            const cards = dbDCards.concat(dbPCards);
+            const pLen = dbPCards.length - 1;
+            const dLen = dbDCards.length - 1;
+            let pConter = 0;
+            let dCounter = 0;
 
             cards.forEach((c: any) => {
                 const isVisible = c.isVisible;
                 const owner = c.owner;
-                const deckIndex = c.deckIndex;
-                const options = this._cards[deckIndex];
+                const cIndex = c.cIndex;
+                const options = this._cards[cIndex];
 
                 const card = this._cardPool.get();
 
@@ -92,12 +94,14 @@ export class Deck extends PIXI.Container {
                 this._usedCards.push(card)
 
                 if (owner === 'dealer') {
-                    this._dealerCards.addChild(card.data);
-                    card.data.x = (dealerLen - dealerCounter++) * -40
+                    this._dCardsC.addChild(card.data);
+                    this.dCards.push(card.data);
+                    card.data.x = (dLen - dCounter++) * -40
                     if (card.data.x < -320) card.data.x = -320;
                 } else {
-                    this._playerCards.addChild(card.data);
-                    card.data.x = (playerLen - playerCounter++) * -45
+                    this._pCardsC.addChild(card.data);
+                    this.pCards.push(card.data);
+                    card.data.x = (pLen - pConter++) * -45
                     if (card.data.x < -180) card.data.x = -180;
                 }
             });
@@ -110,14 +114,18 @@ export class Deck extends PIXI.Container {
         this.relase(true);
     }
     shuffle(): void {
-        this._copies = [...this._cards];
-        this.scene.game.data.set('deck', [...this._copies]).writeLocal();
+        this.copies = [...this._cards];
+        this.scene.game.data.set('deck', [...this.copies]).save();
     }
     initial(callback: () => void = null, context: any = null): void {
         if (this.isLocked === false) {
-            this.hit(1, 'dealer');
-            this.hit(1, 'dealer', false);
-            this.hit(2, 'player', true, callback, context);
+            this.hit(1, 'dealer', true, () => {
+                this.hit(1, 'player', true, () => {
+                    this.hit(1, 'dealer', false, () => {
+                        this.hit(1, 'player', true, callback, context);
+                    }, this);
+                }, this);
+            }, this);
         }
     }
     hit(
@@ -131,11 +139,11 @@ export class Deck extends PIXI.Container {
             const cards = [];
             const cardTypes = ['clubs', 'spades', 'diamonds', 'hearts'];
             const cardSubtypes = ['a', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'];
-            count = Math.min(count, this._copies.length);
+            count = Math.min(count, this.copies.length);
 
             for (let i = 0; i < count; i++) {
-                const randomIndex = RandomNumber(0, this._copies.length - 1);
-                const cardOptions = this._copies[randomIndex];
+                let randomIndex = RandomNumber(0, this.copies.length - 1);
+                const cardOptions = this.copies[randomIndex];
                 const card = this._cardPool.get();
 
                 card.data.create(cardOptions);
@@ -146,7 +154,8 @@ export class Deck extends PIXI.Container {
                 card.data.owner = type;
                 cards.push(card);
                 isOpened ? card.data.open() : card.data.close();
-                type === 'dealer' ? this._dealerCards.addChild(card.data) : this._playerCards.addChild(card.data);
+                type === 'dealer' ? this._dCardsC.addChild(card.data) : this._pCardsC.addChild(card.data);
+                type === 'dealer' ? this.dCards.push(card.data) : this.pCards.push(card.data);
 
                 const dbCards = this.scene.game.data.get(`${type}`, []);
                 dbCards.push({
@@ -154,13 +163,13 @@ export class Deck extends PIXI.Container {
                     type: card.data.type,
                     subType: card.data.subType,
                     isVisible: card.data.isVisible,
-                    deckIndex: cardSubtypes.indexOf(card.data.subType) + (cardTypes.indexOf(card.data.type) * 13)
+                    cIndex: cardSubtypes.indexOf(card.data.subType) + (cardTypes.indexOf(card.data.type) * 13)
                 });
-                this.scene.game.data.set(`${type}.cards`, dbCards).writeLocal();
+                this.scene.game.data.set(`${type}`, dbCards).save();
 
                 // remove card from deck
-                this._copies.splice(randomIndex, 1);
-                this.scene.game.data.set('deck', [...this._copies]).writeLocal();
+                this.copies.splice(randomIndex, 1);
+                this.scene.game.data.set('deck', [...this.copies]).save();
                 // card animation
                 const gap = type === 'dealer' ? 40 : 45;
                 const limitX = type === 'dealer' ? -320 : -180;
@@ -170,10 +179,10 @@ export class Deck extends PIXI.Container {
                 this.scene.tween.add({
                     target: card.data,
                     to: { x: 0, y: 0, angle, alpha },
-                    delay: 100 * (i + 1),
+                    delay: 250 * (i + 1),
                     duration: 300,
                     onComplete: (obj: any) => {
-                        const container = obj.owner === 'dealer' ? this._dealerCards : this._playerCards;
+                        const container = obj.owner === 'dealer' ? this._dCardsC : this._pCardsC;
                         const children = [...container.children];
                         children.splice(children.indexOf(obj), 1);
 
@@ -198,38 +207,42 @@ export class Deck extends PIXI.Container {
         if (this.isLocked === false) {
             // move dealer container
             this.scene.tween.add({
-                target: this._dealerCards,
+                target: this._dCardsC,
                 to: { x: -200, alpha: 0 },
                 duration: skipAnim ? 10 : 1000,
                 easing: TWEEN.Easing.Back.In,
                 onComplete: () => {
-                    this.scene.game.data.set('dealer', []).writeLocal();
+                    this.scene.game.data.set('dealer', []).save();
                 }
             });
 
             // move player container
             this.scene.tween.add({
-                target: this._playerCards,
+                target: this._pCardsC,
                 to: { x: -200, alpha: 0 },
                 duration: skipAnim ? 10 : 1000,
                 delay: skipAnim ? 0 : 100,
                 easing: TWEEN.Easing.Back.In,
                 onComplete: () => {
-                    this.scene.game.data.set('player', []).writeLocal();
+                    this.scene.game.data.set('player', []).save();
 
                     this._usedCards.forEach((card) => {
                         this._cardPool.release(card);
                     });
 
                     this._usedCards.length = 0;
-                    this._dealerCards.removeChildren();
-                    this._dealerCards.position.set(88, -20);
-                    this._dealerCards.alpha = 1;
-                    this._playerCards.removeChildren();
-                    this._playerCards.position.set(88, 140);
-                    this._playerCards.alpha = 1;
+                    this._dCardsC.removeChildren();
+                    this._dCardsC.position.set(88, -20);
+                    this._dCardsC.alpha = 1;
+                    this._pCardsC.removeChildren();
+                    this._pCardsC.position.set(88, 140);
+                    this._pCardsC.alpha = 1;
                 }
             });
+
+            // reset variables
+            this.pCards.length = 0;
+            this.dCards.length = 0;
         }
     }
     protected newCard(): Card {
@@ -242,6 +255,6 @@ export class Deck extends PIXI.Container {
     }
     // getter and setter
     get remains(): number {
-        return this._copies.length;
+        return this.copies.length;
     }
 }

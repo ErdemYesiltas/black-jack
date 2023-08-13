@@ -5,8 +5,8 @@ import { Clone } from '../utils';
 
 export interface DataManager extends GlobalMixins.DataManager { }
 export class DataManager extends PIXI.utils.EventEmitter<DataManagerEvents> {
-    static count = 0;
     data: Record<string, any>;
+    static count = 0;
     protected _size: number;
     protected _key = '';
 
@@ -18,7 +18,7 @@ export class DataManager extends PIXI.utils.EventEmitter<DataManagerEvents> {
         DataManager.count++;
 
         if (entriesOrStorage === undefined) { entriesOrStorage = this._key; }
-        if (typeof entriesOrStorage === 'string') { this.readLocal(entriesOrStorage); }
+        if (typeof entriesOrStorage === 'string') { this.load(entriesOrStorage); }
         if (typeof entriesOrStorage === 'object' && !Array.isArray(entriesOrStorage)) {
             for (const key in entriesOrStorage) {
                 this.set(key, entriesOrStorage[key]);
@@ -160,7 +160,7 @@ export class DataManager extends PIXI.utils.EventEmitter<DataManagerEvents> {
             this.emit('removedata', key, data);
 
             if (localStorage) {
-                this.writeLocal();
+                this.save();
             }
         }
 
@@ -169,7 +169,7 @@ export class DataManager extends PIXI.utils.EventEmitter<DataManagerEvents> {
     clear(localStorage = false): this {
         Object.keys(this.data).forEach((prop) => { delete this.data[prop]; }, this);
         if (localStorage) {
-            this.clearLocal();
+            this.unload();
         }
 
         this._size = 0;
@@ -247,7 +247,7 @@ export class DataManager extends PIXI.utils.EventEmitter<DataManagerEvents> {
 
         return false;
     }
-    readLocal(key?: string): this {
+    load(key?: string): this {
         if (window.localStorage !== null) {
             key = key !== undefined ? key : this._key;
 
@@ -280,7 +280,7 @@ export class DataManager extends PIXI.utils.EventEmitter<DataManagerEvents> {
 
         return this;
     }
-    writeLocal(): this {
+    save(): this {
         if (window.localStorage !== null) {
             window.localStorage.setItem(this._key, JSON.stringify(this.data));
         }
@@ -290,7 +290,7 @@ export class DataManager extends PIXI.utils.EventEmitter<DataManagerEvents> {
 
         return this;
     }
-    clearLocal(): this {
+    unload(): this {
         if (window.localStorage !== null) {
             window.localStorage.removeItem(this._key);
         }

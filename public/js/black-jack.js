@@ -149,7 +149,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                 entriesOrStorage = this._key;
             }
             if (typeof entriesOrStorage === 'string') {
-                this.readLocal(entriesOrStorage);
+                this.load(entriesOrStorage);
             }
             if (typeof entriesOrStorage === 'object' && !Array.isArray(entriesOrStorage)) {
                 for (const key in entriesOrStorage) {
@@ -264,7 +264,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                 this._size--;
                 this.emit('removedata', key, data);
                 if (localStorage) {
-                    this.writeLocal();
+                    this.save();
                 }
             }
             return this;
@@ -272,7 +272,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
         clear(localStorage = false) {
             Object.keys(this.data).forEach((prop) => { delete this.data[prop]; }, this);
             if (localStorage) {
-                this.clearLocal();
+                this.unload();
             }
             this._size = 0;
             return this;
@@ -341,7 +341,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             }
             return false;
         }
-        readLocal(key) {
+        load(key) {
             if (window.localStorage !== null) {
                 key = key !== undefined ? key : this._key;
                 let localEntries = window.localStorage.getItem(key);
@@ -369,7 +369,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             }
             return this;
         }
-        writeLocal() {
+        save() {
             if (window.localStorage !== null) {
                 window.localStorage.setItem(this._key, JSON.stringify(this.data));
             }
@@ -378,7 +378,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             }
             return this;
         }
-        clearLocal() {
+        unload() {
             if (window.localStorage !== null) {
                 window.localStorage.removeItem(this._key);
             }
@@ -1907,6 +1907,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             super();
             this.isLocked = false;
             this._bet = 0;
+            this._reserved = 0;
             this._usedChips = [];
             this._mainChips = {};
             this._chips = {};
@@ -1922,12 +1923,19 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this._betText = new PIXI__namespace.Text('', {
                 fontFamily: 'Bungee Regular',
                 fill: '#ffffff',
-                fontSize: 16,
-                align: 'center'
+                fontSize: 16
             });
             this._betText.anchor.set(0.5);
             this._betText.position.set(50, 15);
             back.addChild(this._betText);
+            this._reservedText = new PIXI__namespace.Text('', {
+                fontFamily: 'Bungee Regular',
+                fill: '#31cac6',
+                fontSize: 16
+            });
+            this._reservedText.anchor.set(0.5);
+            this._reservedText.position.set(80, 15);
+            back.addChild(this._reservedText);
             const clearBtn = new SpriteButton({
                 texture: 'buttons/clean',
                 up: '#ffffff',
@@ -1942,7 +1950,9 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             clearBtn.anchor.set(0.5);
             this.addChild(clearBtn);
             clearBtn.onclick = clearBtn.ontap = () => {
-                this.clear();
+                if (this.isLocked === false) {
+                    this.clear();
+                }
             };
             this._chipPool = new ObjectPool(this.createChip, this.resetChip, 5);
             const gap = 90;
@@ -1969,6 +1979,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
         sync() {
             // sync bet
             this.bet = this.scene.game.data.get('bet', 0);
+            this.reserved = this.scene.game.data.get('reserved', 0);
             // sync chips
             const dbChips = this.scene.game.data.get('chips', []);
             if (Array.isArray(dbChips)) {
@@ -1977,7 +1988,6 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                 });
             }
             this.checkChips();
-            this.checkBalance();
         }
         reset() {
             this.isLocked = false;
@@ -2002,10 +2012,15 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                 this.checkChips();
             }
         }
+        reserve() {
+            if (this.isLocked === false) {
+                this.reserved = this.bet;
+                this.clear();
+            }
+        }
         onBalanceChange(key) {
             if (key === 'balance') {
                 this.checkChips();
-                this.checkBalance();
             }
         }
         checkChips() {
@@ -2022,12 +2037,6 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                 }
             }
         }
-        checkBalance() {
-            const balance = this.scene.game.data.get('balance', 0);
-            if (balance < this.bet) {
-                this.clear();
-            }
-        }
         increase(chip) {
             if (this.isLocked === false) {
                 const keys = Object.keys(this._chips);
@@ -2038,7 +2047,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                         this.checkChips();
                         const dbChips = this.scene.game.data.get('chips', []);
                         dbChips.push(chip);
-                        this.scene.game.data.set('chips', dbChips).writeLocal();
+                        this.scene.game.data.set('chips', dbChips).save();
                         this.playIncreaseChipAnim(chip);
                     }
                 }
@@ -2078,7 +2087,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                         this.checkChips();
                         const dbChips = this.scene.game.data.get('chips', []);
                         dbChips.splice(dbChips.lastIndexOf(chip), 1);
-                        this.scene.game.data.set('chips', dbChips).writeLocal();
+                        this.scene.game.data.set('chips', dbChips).save();
                         this.playDecreaseAnim(usedIndex);
                     }
                 }
@@ -2133,8 +2142,19 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
         set bet(value) {
             this._bet = value;
             this.scene.game.data.set('bet', value);
-            this.scene.game.data.writeLocal();
+            this.scene.game.data.save();
             this._betText.text = `${this._bet.toString()} €`;
+        }
+        get reserved() {
+            return this._bet;
+        }
+        set reserved(value) {
+            this._reserved = value;
+            this.scene.game.data.set('reserved', value);
+            this.scene.game.data;
+            this._reservedText.text = `${this._reserved.toString()} €`;
+            this._reservedText.visible = value > 0;
+            this._betText.x = value > 0 ? 20 : 50;
         }
     }
 
@@ -2205,24 +2225,26 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
         constructor(scene, options) {
             super();
             this.isLocked = false;
+            this.pCards = [];
+            this.dCards = [];
+            this.copies = [];
             this._cards = [];
-            this._copies = [];
             this._usedCards = [];
             // needed for tween animation
             this.scene = scene;
             this.name = 'DECK VIEW';
             // dealer card container
-            this._dealerCards = new PIXI__namespace.Container();
-            this._dealerCards.name = 'DEALER CARDS';
-            this._dealerCards.position.set(88, -20);
-            this._dealerCards.scale.set(0.5);
-            this.addChild(this._dealerCards);
+            this._dCardsC = new PIXI__namespace.Container();
+            this._dCardsC.name = 'DEALER CARDS';
+            this._dCardsC.position.set(88, -20);
+            this._dCardsC.scale.set(0.5);
+            this.addChild(this._dCardsC);
             // player card container
-            this._playerCards = new PIXI__namespace.Container();
-            this._playerCards.name = 'PLAYER CARDS';
-            this._playerCards.position.set(88, 140);
-            this._playerCards.scale.set(0.75);
-            this.addChild(this._playerCards);
+            this._pCardsC = new PIXI__namespace.Container();
+            this._pCardsC.name = 'PLAYER CARDS';
+            this._pCardsC.position.set(88, 140);
+            this._pCardsC.scale.set(0.75);
+            this.addChild(this._pCardsC);
             this._options = options;
             this._cardPool = new ObjectPool(this.newCard, this.resetCard, 8);
             // fill cards
@@ -2245,20 +2267,20 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
         }
         sync() {
             // sync variables
-            const dbDealerCards = this.scene.game.data.get('dealer', []);
-            const dbPlayerCards = this.scene.game.data.get('player', []);
-            if (dbDealerCards.length > 0 || dbPlayerCards.length > 0) {
-                this._copies = this.scene.game.data.get('deck', []);
-                const cards = dbDealerCards.concat(dbPlayerCards);
-                const playerLen = dbPlayerCards.length - 1;
-                const dealerLen = dbDealerCards.length - 1;
-                let playerCounter = 0;
-                let dealerCounter = 0;
+            const dbDCards = this.scene.game.data.get('dealer', []);
+            const dbPCards = this.scene.game.data.get('player', []);
+            if (dbDCards.length > 0 || dbPCards.length > 0) {
+                this.copies = this.scene.game.data.get('deck', []);
+                const cards = dbDCards.concat(dbPCards);
+                const pLen = dbPCards.length - 1;
+                const dLen = dbDCards.length - 1;
+                let pConter = 0;
+                let dCounter = 0;
                 cards.forEach((c) => {
                     const isVisible = c.isVisible;
                     const owner = c.owner;
-                    const deckIndex = c.deckIndex;
-                    const options = this._cards[deckIndex];
+                    const cIndex = c.cIndex;
+                    const options = this._cards[cIndex];
                     const card = this._cardPool.get();
                     card.data.create(options);
                     card.data.pivot.set(100);
@@ -2266,14 +2288,16 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                     isVisible ? card.data.open() : card.data.close();
                     this._usedCards.push(card);
                     if (owner === 'dealer') {
-                        this._dealerCards.addChild(card.data);
-                        card.data.x = (dealerLen - dealerCounter++) * -40;
+                        this._dCardsC.addChild(card.data);
+                        this.dCards.push(card.data);
+                        card.data.x = (dLen - dCounter++) * -40;
                         if (card.data.x < -320)
                             card.data.x = -320;
                     }
                     else {
-                        this._playerCards.addChild(card.data);
-                        card.data.x = (playerLen - playerCounter++) * -45;
+                        this._pCardsC.addChild(card.data);
+                        this.pCards.push(card.data);
+                        card.data.x = (pLen - pConter++) * -45;
                         if (card.data.x < -180)
                             card.data.x = -180;
                     }
@@ -2288,14 +2312,18 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this.relase(true);
         }
         shuffle() {
-            this._copies = [...this._cards];
-            this.scene.game.data.set('deck', [...this._copies]).writeLocal();
+            this.copies = [...this._cards];
+            this.scene.game.data.set('deck', [...this.copies]).save();
         }
         initial(callback = null, context = null) {
             if (this.isLocked === false) {
-                this.hit(1, 'dealer');
-                this.hit(1, 'dealer', false);
-                this.hit(2, 'player', true, callback, context);
+                this.hit(1, 'dealer', true, () => {
+                    this.hit(1, 'player', true, () => {
+                        this.hit(1, 'dealer', false, () => {
+                            this.hit(1, 'player', true, callback, context);
+                        }, this);
+                    }, this);
+                }, this);
             }
         }
         hit(count = 1, type, isOpened = true, callback = null, context = null) {
@@ -2303,10 +2331,10 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                 const cards = [];
                 const cardTypes = ['clubs', 'spades', 'diamonds', 'hearts'];
                 const cardSubtypes = ['a', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'];
-                count = Math.min(count, this._copies.length);
+                count = Math.min(count, this.copies.length);
                 for (let i = 0; i < count; i++) {
-                    const randomIndex = RandomNumber(0, this._copies.length - 1);
-                    const cardOptions = this._copies[randomIndex];
+                    let randomIndex = RandomNumber(0, this.copies.length - 1);
+                    const cardOptions = this.copies[randomIndex];
                     const card = this._cardPool.get();
                     card.data.create(cardOptions);
                     card.data.alpha = 0;
@@ -2316,19 +2344,20 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                     card.data.owner = type;
                     cards.push(card);
                     isOpened ? card.data.open() : card.data.close();
-                    type === 'dealer' ? this._dealerCards.addChild(card.data) : this._playerCards.addChild(card.data);
+                    type === 'dealer' ? this._dCardsC.addChild(card.data) : this._pCardsC.addChild(card.data);
+                    type === 'dealer' ? this.dCards.push(card.data) : this.pCards.push(card.data);
                     const dbCards = this.scene.game.data.get(`${type}`, []);
                     dbCards.push({
                         owner: type,
                         type: card.data.type,
                         subType: card.data.subType,
                         isVisible: card.data.isVisible,
-                        deckIndex: cardSubtypes.indexOf(card.data.subType) + (cardTypes.indexOf(card.data.type) * 13)
+                        cIndex: cardSubtypes.indexOf(card.data.subType) + (cardTypes.indexOf(card.data.type) * 13)
                     });
-                    this.scene.game.data.set(`${type}.cards`, dbCards).writeLocal();
+                    this.scene.game.data.set(`${type}`, dbCards).save();
                     // remove card from deck
-                    this._copies.splice(randomIndex, 1);
-                    this.scene.game.data.set('deck', [...this._copies]).writeLocal();
+                    this.copies.splice(randomIndex, 1);
+                    this.scene.game.data.set('deck', [...this.copies]).save();
                     // card animation
                     const gap = type === 'dealer' ? 40 : 45;
                     const limitX = type === 'dealer' ? -320 : -180;
@@ -2337,10 +2366,10 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                     this.scene.tween.add({
                         target: card.data,
                         to: { x: 0, y: 0, angle, alpha },
-                        delay: 100 * (i + 1),
+                        delay: 250 * (i + 1),
                         duration: 300,
                         onComplete: (obj) => {
-                            const container = obj.owner === 'dealer' ? this._dealerCards : this._playerCards;
+                            const container = obj.owner === 'dealer' ? this._dCardsC : this._pCardsC;
                             const children = [...container.children];
                             children.splice(children.indexOf(obj), 1);
                             children.forEach((c) => {
@@ -2362,35 +2391,38 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             if (this.isLocked === false) {
                 // move dealer container
                 this.scene.tween.add({
-                    target: this._dealerCards,
+                    target: this._dCardsC,
                     to: { x: -200, alpha: 0 },
                     duration: skipAnim ? 10 : 1000,
                     easing: TWEEN__namespace.Easing.Back.In,
                     onComplete: () => {
-                        this.scene.game.data.set('dealer', []).writeLocal();
+                        this.scene.game.data.set('dealer', []).save();
                     }
                 });
                 // move player container
                 this.scene.tween.add({
-                    target: this._playerCards,
+                    target: this._pCardsC,
                     to: { x: -200, alpha: 0 },
                     duration: skipAnim ? 10 : 1000,
                     delay: skipAnim ? 0 : 100,
                     easing: TWEEN__namespace.Easing.Back.In,
                     onComplete: () => {
-                        this.scene.game.data.set('player', []).writeLocal();
+                        this.scene.game.data.set('player', []).save();
                         this._usedCards.forEach((card) => {
                             this._cardPool.release(card);
                         });
                         this._usedCards.length = 0;
-                        this._dealerCards.removeChildren();
-                        this._dealerCards.position.set(88, -20);
-                        this._dealerCards.alpha = 1;
-                        this._playerCards.removeChildren();
-                        this._playerCards.position.set(88, 140);
-                        this._playerCards.alpha = 1;
+                        this._dCardsC.removeChildren();
+                        this._dCardsC.position.set(88, -20);
+                        this._dCardsC.alpha = 1;
+                        this._pCardsC.removeChildren();
+                        this._pCardsC.position.set(88, 140);
+                        this._pCardsC.alpha = 1;
                     }
                 });
+                // reset variables
+                this.pCards.length = 0;
+                this.dCards.length = 0;
             }
         }
         newCard() {
@@ -2402,7 +2434,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
         }
         // getter and setter
         get remains() {
-            return this._copies.length;
+            return this.copies.length;
         }
     }
 
@@ -2439,6 +2471,15 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             //this._totalText.anchor.set(0, 0.5);
             this._totalText.position.set(40, 5);
             this.addChild(this._totalText);
+            // total text
+            this._amountText = new PIXI__namespace.Text('', {
+                fontFamily: 'Bungee Regular',
+                fill: '#ffffff',
+                fontSize: 16,
+                align: 'right'
+            });
+            this._amountText.position.set(150, 5);
+            this.addChild(this._amountText);
             this.sync();
         }
         sync() {
@@ -2448,12 +2489,20 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this._totalText.text = `${this._total} €`;
         }
         reset() {
+            this.resetTweens();
+            this._total = 0;
+            this._totalText.text = `${this._total} €`;
+        }
+        resetTweens() {
             if (this._valueTween && this._valueTween.isPlaying) {
                 this._valueTween.end();
                 this.scene.tween.remove(this._valueTween);
             }
-            this._total = 0;
-            this._totalText.text = `${this._total} €`;
+            if (this._amountTween && this._amountTween.isPlaying) {
+                this._amountTween.end();
+                this.scene.tween.remove(this._amountTween);
+            }
+            this._amountText.text = '';
         }
         createCoinAnim() {
             const coinTextures = [
@@ -2483,7 +2532,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                     this.playCoinAnim(value);
                 }
                 this._total += value;
-                this.scene.game.data.set('balance', this._total).writeLocal();
+                this.scene.game.data.set('balance', this._total).save();
             }
         }
         withdraw(value, skipAnim = false) {
@@ -2491,30 +2540,41 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                 return false;
             this.playAnim(this.total - value, skipAnim);
             this._total -= value;
-            this.scene.game.data.set('balance', this._total).writeLocal();
+            this.scene.game.data.set('balance', this._total).save();
             return true;
         }
-        playAnim(value, skipAnim = false) {
-            if (this._valueTween && this._valueTween.isPlaying) {
-                this._valueTween.end();
-                this.scene.tween.remove(this._valueTween);
-            }
+        playAnim(totalValue, skipAnim = false) {
+            this.resetTweens();
             const counter = { value: this.total };
-            let count = Math.abs(Math.round((value - this.total) / 100));
-            count = Math.min(count, 9);
+            const amount = totalValue - this.total;
+            let count = Math.abs(Math.round(amount / 10));
+            count = Math.min(count, 10);
+            this._amountText.style.fill = amount > 0 ? '#ffd700' : '#c00707';
+            this._amountText.text = amount.toString();
             this._valueTween = this.scene.tween.add({
                 target: counter,
-                to: { value },
+                to: { value: totalValue },
                 duration: skipAnim ? 10 : count * 300,
+                delay: 250,
                 onUpdate: (obj) => {
                     this._totalText.text = `${Math.round(obj.value).toString()} €`;
+                }
+            });
+            this._amountTween = this.scene.tween.add({
+                target: { value: amount },
+                to: { value: 0 },
+                duration: skipAnim ? 10 : count * 300,
+                delay: 250,
+                onUpdate: (obj) => {
+                    this._amountText.text = `${Math.round(obj.value).toString()}`;
                 },
-                start: true
+                onComplete: () => {
+                    this._amountText.text = '';
+                }
             });
         }
         playCoinAnim(value) {
-            let coinCount = Math.round(value / 100);
-            coinCount = Math.min(coinCount, 9);
+            const coinCount = Math.min(value, 20);
             for (let i = 0; i < coinCount; i++) {
                 const randomX = RandomNumber(150, 250);
                 const randomY = RandomNumber(320, 420);
@@ -2563,7 +2623,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             safeArea.name = 'SAFE AREA';
             safeArea.position.set(415, 60);
             safeArea.beginFill('#000000', .3).lineStyle({ width: 5 }).drawRect(0, 0, 450, 600).endFill();
-            this.addChild(safeArea);
+            //this.addChild(safeArea);
         }
     }
 
@@ -2571,6 +2631,8 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
         constructor() {
             super(...arguments);
             this._sessionID = 0;
+            this._pScores = [0];
+            this._dScores = [0];
         }
         init() {
             this._sessionID = this.game.data.get('sessionID', -1);
@@ -2580,161 +2642,448 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             // get game config
             const config = PIXI__namespace.Cache.get('blackjack');
             // dealer score
-            const dealerText = new PIXI__namespace.Graphics();
-            dealerText.name = 'DEALER SCORE';
-            dealerText.beginFill('#1e1e1e', .5).drawRoundedRect(0, 0, 50, 20, 4).endFill();
-            dealerText.position.set(620, 200);
-            this.addChild(dealerText);
-            this._dealerScore = new PIXI__namespace.Text('0', {
+            const dText = new PIXI__namespace.Graphics();
+            dText.name = 'DEALER SCORE';
+            dText.beginFill('#1e1e1e', .5).drawRoundedRect(0, 0, 50, 20, 4).endFill();
+            dText.position.set(620, 200);
+            this.addChild(dText);
+            this._dScoreText = new PIXI__namespace.Text('0', {
                 fontFamily: 'Bungee Regular',
                 fill: '#ffffff',
                 fontSize: 12,
                 align: 'center'
             });
-            this._dealerScore.anchor.set(0.5);
-            this._dealerScore.position.set(25, 9);
-            dealerText.addChild(this._dealerScore);
+            this._dScoreText.anchor.set(0.5);
+            this._dScoreText.position.set(25, 9);
+            dText.addChild(this._dScoreText);
             // player score
-            const playerText = new PIXI__namespace.Graphics();
-            playerText.name = 'PLAYER SCORE';
-            playerText.beginFill('#1e1e1e', .5).drawRoundedRect(0, 0, 50, 20, 4).endFill();
-            playerText.position.set(620, 380);
-            this.addChild(playerText);
-            this._playerScore = new PIXI__namespace.Text('0', {
+            const pText = new PIXI__namespace.Graphics();
+            pText.name = 'PLAYER SCORE';
+            pText.beginFill('#1e1e1e', .5).drawRoundedRect(0, 0, 50, 20, 4).endFill();
+            pText.position.set(620, 380);
+            this.addChild(pText);
+            this._pScoreText = new PIXI__namespace.Text('0', {
                 fontFamily: 'Bungee Regular',
                 fill: '#ffffff',
                 fontSize: 12,
                 align: 'center'
             });
-            this._playerScore.anchor.set(0.5);
-            this._playerScore.position.set(25, 9);
-            playerText.addChild(this._playerScore);
+            this._pScoreText.anchor.set(0.5);
+            this._pScoreText.position.set(25, 9);
+            pText.addChild(this._pScoreText);
             // set home button function
             this._homeButton.onclick = this._homeButton.ontap = this.onHomeClick.bind(this);
-            // create wallet
-            this._wallet = new Wallet(this);
-            this._wallet.position.set(425, 70);
-            this.addChild(this._wallet);
             // create bet panel
-            this._betPanel = new BetPanel(this, config.chips);
-            this._betPanel.position.set(425, 600);
-            this.addChild(this._betPanel);
+            this._betP = new BetPanel(this, config.chips);
+            this._betP.position.set(425, 600);
+            this.addChild(this._betP);
             this._deck = new Deck(this, config.deck);
             this._deck.position.set(550, 170);
             this.addChild(this._deck);
             this._dealButton.onclick = this._dealButton.ontap = this.onDeal.bind(this);
             this._hitButton.onclick = this._hitButton.ontap = this.onHit.bind(this);
             this._standButton.onclick = this._standButton.ontap = this.onStand.bind(this);
+            // black background
+            this._blackBack = new PIXI__namespace.Graphics();
+            this._blackBack.visible = false;
+            this._blackBack.alpha = 0;
+            this._blackBack.name = 'BLACK BACKGROUND';
+            this._blackBack.beginFill('#000000', .7).lineStyle({ width: 5 }).drawRect(0, 0, 1280, 720).endFill();
+            this._blackBack.eventMode = 'dynamic';
+            this.addChild(this._blackBack);
+            // create wallet
+            this._wallet = new Wallet(this);
+            this._wallet.position.set(425, 70);
+            this.addChild(this._wallet);
+            // result text
+            this._resultText = new PIXI__namespace.Text('PUSH', {
+                fontFamily: 'Bungee Regular',
+                fill: '#ffffff',
+                fontSize: 100,
+                align: 'center',
+                wordWrap: true,
+                breakWords: true,
+                wordWrapWidth: 400
+            });
+            this._resultText.name = 'RESULT TEXT';
+            this._resultText.visible = false;
+            this._resultText.alpha = 0;
+            this._resultText.scale.set(0);
+            this._resultText.anchor.set(0.5);
+            this._resultText.position.set(640, 360);
+            this.addChild(this._resultText);
+            // popup
+            this._popup = new PIXI__namespace.Graphics();
+            this._popup.visible = false;
+            this._popup.alpha = 0;
+            this._popup.name = 'POPUP BACKGROUND';
+            this._popup.beginFill('#000000', 1).lineStyle({ width: 5 }).drawRoundedRect(0, 0, 300, 200, 10).endFill();
+            this._popup.position.set(490, 140);
+            this.addChild(this._popup);
+            // popup text
+            const popupText = new PIXI__namespace.Text('Not enough money!', {
+                fontFamily: 'Bungee Regular',
+                fill: '#ffffff',
+                fontSize: 24,
+                align: 'center',
+                wordWrap: true,
+                breakWords: true,
+                wordWrapWidth: 250
+            });
+            popupText.position.set(70, 50);
+            this._popup.addChild(popupText);
+            // popup deposit button
+            const depositBtn = new SpriteButton({
+                texture: 'buttons/start',
+                up: '#ffffff',
+                enter: '#dddddd',
+                down: '#aaaaaa',
+                disable: '#555555',
+                type: 'tint'
+            });
+            depositBtn.anchor.set(0.5);
+            depositBtn.scale.set(0.35);
+            depositBtn.position.set(60, 165);
+            const deposit1000 = new PIXI__namespace.Text('+1000 €', {
+                fontFamily: 'Bungee Regular',
+                fill: '#ffffff',
+                fontSize: 40,
+                align: 'center'
+            });
+            deposit1000.position.set(-88, -22);
+            depositBtn.onclick = depositBtn.ontap = () => {
+                this._wallet.deposit(1000);
+                this.setState('deal');
+                this.closePopup();
+            };
+            depositBtn.addChild(deposit1000);
+            this._popup.addChild(depositBtn);
+            // popup reset button
+            const resetBtn = new SpriteButton({
+                texture: 'buttons/stand',
+                up: '#ffffff',
+                enter: '#dddddd',
+                down: '#aaaaaa',
+                disable: '#555555',
+                type: 'tint'
+            });
+            resetBtn.anchor.set(0.5);
+            resetBtn.scale.set(0.35);
+            resetBtn.position.set(150, 165);
+            const resetText = new PIXI__namespace.Text('RESET', {
+                fontFamily: 'Bungee Regular',
+                fill: '#ffffff',
+                fontSize: 40,
+                align: 'center'
+            });
+            resetText.position.set(-88, -22);
+            resetBtn.onclick = resetBtn.ontap = () => {
+                this.closePopup();
+                this.game.data.clear(true);
+                this.game.scene.start('MenuScene');
+                this.game.scene.sleep(this.key);
+            };
+            resetBtn.addChild(resetText);
+            this._popup.addChild(resetBtn);
+            // popup cancel button
+            const cancelBtn = new SpriteButton({
+                texture: 'buttons/hit',
+                up: '#ffffff',
+                enter: '#dddddd',
+                down: '#aaaaaa',
+                disable: '#555555',
+                type: 'tint'
+            });
+            cancelBtn.anchor.set(0.5);
+            cancelBtn.scale.set(0.35);
+            cancelBtn.position.set(240, 165);
+            const cancelText = new PIXI__namespace.Text('CANCEL', {
+                fontFamily: 'Bungee Regular',
+                fill: '#ffffff',
+                fontSize: 40,
+                align: 'center'
+            });
+            cancelText.position.set(-88, -22);
+            cancelBtn.onclick = cancelBtn.ontap = () => {
+                this.closePopup();
+            };
+            cancelBtn.addChild(cancelText);
+            this._popup.addChild(cancelBtn);
             // sync game
-            this.setStates(this.game.data.get('state', 'deal'));
+            this.setState(this.game.data.get('state', 'deal'));
         }
-        checkCardValues() {
-            // reset dealer and player values
-            let dealer = 0;
-            let player = 0;
-            let dealerAce = 0;
-            let playerAce = 0;
-            // get all cards
-            const dealerCards = this.game.data.get('dealer', []);
-            const playerCards = this.game.data.get('player', []);
-            const cards = dealerCards.concat(playerCards);
-            const aceOpt = this.game.data.get('ace', 'both');
-            const ace = aceOpt === '1' ? 1 : 11;
+        showPopup() {
+            this._blackBack.visible = true;
+            this._blackBack.alpha = 1;
+            this._popup.visible = true;
+            this._popup.alpha = 1;
+        }
+        closePopup() {
+            this._blackBack.visible = false;
+            this._blackBack.alpha = 0;
+            this._popup.visible = false;
+            this._popup.alpha = 0;
+        }
+        calculateScore(cards) {
+            // reset dealer values
+            let score = 0;
+            let aces = 0;
             // calculate card values
             cards.forEach((card) => {
                 if (card.isVisible === false)
                     return;
                 if (['k', 'q', 'j'].indexOf(card.subType) > -1) {
-                    card.owner === 'player' ? player += 10 : dealer += 10;
+                    score += 10;
                 }
                 else if (card.subType === 'a') {
-                    card.owner === 'player' ? player += ace : dealer += ace;
-                    card.owner === 'player' ? playerAce += 1 : dealerAce += 1;
+                    score += 11;
+                    aces++;
                 }
                 else {
-                    card.owner === 'player' ? player += parseInt(card.subType) : dealer += parseInt(card.subType);
+                    score += parseInt(card.subType);
                 }
             });
-            let playerTotal = [player];
-            let dealerTotal = [dealer];
-            if (aceOpt === 'both') {
-                for (let i = 0; i < playerAce; i++) {
-                    playerTotal.push(player - (10 * (i + 1)));
-                }
-                for (let j = 0; j < dealerAce; j++) {
-                    dealerTotal.push(dealer - (10 * (j + 1)));
-                }
+            let tScore = [score];
+            // check ace values
+            for (let j = 0; j < aces; j++) {
+                tScore.push(score - (10 * (j + 1)));
             }
             // filter values
-            const playerFiltered = playerTotal.filter(p => p <= 21);
-            const dealerFiltered = dealerTotal.filter(d => d <= 21);
-            // update texts
-            this._playerScore.text = playerFiltered.length > 0 ? playerFiltered.toString().replace(',', '/') : Math.min(...playerTotal).toString();
-            this._dealerScore.text = dealerFiltered.length > 0 ? dealerFiltered.toString().replace(',', '/') : Math.min(...dealerTotal).toString();
+            const lower21 = tScore.filter(s => s <= 21);
+            // update scores
+            return lower21.length > 0 ? [...lower21] : [Math.min(...tScore)];
+        }
+        checkCards() {
+            const state = this.game.data.get('state', 'deal');
+            if (state === 'hit') {
+                // update scores
+                this._pScores = this.calculateScore(this.game.data.get('player', []));
+                // update texts
+                this._pScoreText.text = this._pScores.toString().replace(',', '/');
+                this.checkResult();
+            }
+            if (state === 'stand' || state === 'hit') {
+                // update scores
+                this._dScores = this.calculateScore(this.game.data.get('dealer', []));
+                // update texts
+                this._dScoreText.text = this._dScores.toString().replace(',', '/');
+                this.checkResult();
+            }
+        }
+        checkResult() {
+            const state = this.game.data.get('state', 'deal');
+            if (state === 'hit') {
+                for (let i = 0; i < this._pScores.length; i++) {
+                    if (this._pScores[i] >= 21) {
+                        this._pScores = [this._pScores[i]];
+                        this.checkAdditionBet();
+                        break;
+                    }
+                }
+            }
+            else if (state === 'stand') {
+                let isOver = false;
+                for (let i = 0; i < this._dScores.length; i++) {
+                    if (this._dScores[i] > 21
+                        || (this._dScores[i] >= this._pScores[0] && this._dScores[i] <= 21)
+                        || (this._pScores[0] >= 21 && this._dScores[i] <= 21)) {
+                        this._dScores = [this._dScores[i]];
+                        this.setState('finished');
+                        isOver = true;
+                        break;
+                    }
+                }
+                if (!isOver)
+                    this.playForDealer();
+            }
+        }
+        checkAdditionBet() {
+            if (this._betP.bet > 0 && !this._wallet.withdraw(this._betP.bet)) {
+                this.showPopup();
+                return;
+            }
+            this.setState('stand');
+        }
+        playForDealer() {
+            const isRevealed = this.game.data.get('revealed', false);
+            if (!isRevealed) {
+                this.game.data.set('revealed', true);
+                this._deck.dCards[1].open();
+                // update database
+                const dCards = this.game.data.get('dealer', []);
+                dCards[1].isVisible = true;
+                this.game.data.set('dealer', dCards);
+                this.checkCards();
+            }
+            else {
+                //setTimeout(() => {
+                this._deck.hit(1, 'dealer', true, this.checkCards, this);
+                //}, 500);
+            }
+        }
+        decideNextMove() {
+            const state = this.game.data.get('state', 'deal');
+            if (state === 'finished') {
+                const pScore = this._pScores[0];
+                const dScore = this._dScores[0];
+                let result = 'push';
+                if (pScore > dScore) {
+                    result = pScore < 21 ? 'win' : (pScore > 21 ? 'bust' : 'blackjack');
+                }
+                else if (pScore < dScore) {
+                    result = dScore <= 21 ? 'lose' : 'win';
+                }
+                this.playResult(result);
+            }
+            else if (state === 'noMoney') {
+                this.showPopup();
+            }
+        }
+        playInitialCards() {
+            this._deck.initial(() => {
+                this.setState('hit');
+                this.checkCards();
+            }, this);
+        }
+        playResult(result) {
+            // result text
+            this.tween.add({
+                target: this._resultText,
+                to: { scale: { x: 1, y: 1 }, alpha: 1 },
+                duration: 1000,
+                delay: 500,
+                easing: TWEEN__namespace.Easing.Back.Out,
+                onStart: () => {
+                    if (result === 'win' || result === 'blackjack' || result === 'push') {
+                        console.log(this._betP.bet, this._betP.reserved, (result === 'win' ? 2 : result === 'blackjack' ? 3 : 1));
+                        this._wallet.deposit((this._betP.bet + this._betP.reserved) * (result === 'win' ? 2 : result === 'blackjack' ? 3 : 1));
+                    }
+                    this._betP.isLocked = false;
+                    this._deck.isLocked = false;
+                    this._betP.reserved = 0;
+                    this._betP.clear();
+                    this._deck.relase();
+                    this._resultText.text = result.toUpperCase();
+                    this._resultText.visible = true;
+                    this._blackBack.visible = true;
+                    this._blackBack.alpha = 1;
+                },
+                onComplete: () => {
+                    this.tween.add({
+                        target: this._resultText,
+                        to: { scale: { x: 0, y: 0 }, alpha: 0 },
+                        duration: 1000,
+                        delay: 1500,
+                        easing: TWEEN__namespace.Easing.Back.In,
+                        onComplete: () => {
+                            this._resultText.visible = false;
+                            this._blackBack.visible = false;
+                            this._blackBack.alpha = 0;
+                            this.setState('deal');
+                        }
+                    });
+                }
+            });
+        }
+        playShuffle(callback = null, context = null) {
+            if (callback) {
+                callback.call(context);
+            }
         }
         // on click deal button
         onDeal() {
-            if (this._wallet.total > 0) {
-                if (this._betPanel.bet > 0 && this._wallet.withdraw(this._betPanel.bet)) {
-                    this._wallet.isLocked = true;
-                    this._betPanel.isLocked = true;
-                    // initial cards
-                    this._deck.initial(() => {
-                        this.setStates('hit');
-                        this.checkCardValues();
-                    }, this);
+            if (this._wallet.total > 0 && this._wallet.total >= this._betP.bet) {
+                if (this._betP.bet > 0 && this._wallet.withdraw(this._betP.bet)) {
+                    // clear inital bet
+                    this._betP.isLocked = false;
+                    this._betP.reserve();
+                    this._dealButton.disabled();
+                    if (this._deck.copies.length <= 26) {
+                        this._deck.shuffle();
+                        this.playShuffle(this.playInitialCards, this);
+                    }
+                    else {
+                        this.playInitialCards();
+                    }
                 }
                 else {
-                    this.setStates('deal');
+                    this.setState('deal');
                 }
             }
             else {
-                this.setStates('noMoney');
+                this.setState('noMoney');
             }
         }
         // on click hit button
         onHit() {
-            this._deck.hit(1, 'player', true, this.checkCardValues, this);
+            this._deck.hit(1, 'player', true, this.checkCards, this);
         }
         // on click stand button
         onStand() {
-            this.setStates('stand');
+            const pScore = this._pScores.filter(p => p <= 21);
+            this._pScores = [Math.max(...pScore)];
+            this.checkAdditionBet();
         }
         // syn game states
-        setStates(state) {
-            this.game.data.set('state', state).writeLocal();
+        setState(state) {
+            this.game.data.set('state', state).save();
             switch (state) {
                 case 'deal':
                     if (this._wallet.total > 0) {
                         this._hitButton.disabled();
                         this._standButton.disabled();
                         this._dealButton.enabled();
-                        this._wallet.isLocked = false;
-                        this._betPanel.isLocked = false;
+                        this._betP.isLocked = false;
                         this._deck.isLocked = false;
+                        // reset components
+                        console.log('deal');
+                        this._betP.clear();
+                        this._deck.relase();
+                        // reset texts
+                        this._pScoreText.text = '0';
+                        this._dScoreText.text = '0';
+                        // reset scores
+                        this._pScores = [0];
+                        this._dScores = [0];
+                        this.game.data.set('revealed', false);
                     }
                     else {
-                        this.setStates('noMoney');
+                        this.setState('noMoney');
                     }
                     break;
                 case 'hit':
                     this._hitButton.enabled();
                     this._standButton.enabled();
                     this._dealButton.disabled();
-                    this._wallet.isLocked = true;
-                    this._betPanel.isLocked = true;
+                    //this._betP.isLocked = true;
                     this._deck.isLocked = false;
-                    this.checkCardValues();
+                    this.checkCards();
                     break;
                 case 'stand':
+                    this._hitButton.disabled();
+                    this._standButton.disabled();
+                    this._dealButton.disabled();
+                    this._betP.isLocked = true;
+                    this.playForDealer();
+                    break;
                 case 'finished':
+                    this._hitButton.disabled();
+                    this._standButton.disabled();
+                    this._dealButton.disabled();
+                    this._betP.isLocked = true;
+                    this._deck.isLocked = true;
+                    // update texts
+                    this._pScoreText.text = this._pScores[0].toString();
+                    this._dScoreText.text = this._dScores[0].toString();
+                    this.decideNextMove();
+                    break;
                 case 'noMoney':
                     this._hitButton.disabled();
                     this._standButton.disabled();
                     this._dealButton.disabled();
-                    this._wallet.isLocked = true;
-                    this._betPanel.isLocked = true;
+                    this._betP.isLocked = true;
                     this._deck.isLocked = true;
+                    this.decideNextMove();
                     break;
             }
         }
@@ -2743,23 +3092,24 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this.game.scene.sleep(this.key);
             this.game.scene.start('MenuScene');
         }
-        /*protected showResult(result: 'win' | 'lost' | 'draw' | 'blackjack'): void {
-
-        }*/
         // scene events
         onWokeUp() {
             const sessionID = this.game.data.get('sessionID', -1);
+            const state = this.game.data.get('state', 'deal');
             if (this._sessionID !== sessionID) {
                 this._sessionID = sessionID;
-                this._playerScore.text = '0';
-                this._dealerScore.text = '0';
+                this._pScoreText.text = '0';
+                this._dScoreText.text = '0';
                 this._wallet.reset();
                 this._wallet.sync();
-                this._betPanel.reset();
-                this._betPanel.sync();
+                this._betP.reset();
+                this._betP.sync();
                 this._deck.reset();
                 this._deck.sync();
-                this.setStates(this.game.data.get('state', 'deal'));
+                this.setState(state);
+            }
+            else if (state === 'noMoney') {
+                this.showPopup();
             }
         }
     }
@@ -2800,7 +3150,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             if (!this.game.data.hasLocalRecord()) {
                 this.resetSession();
             }
-            this.game.data.readLocal();
+            this.game.data.load();
             this.on('wokeup', this.onWokeUp, this);
         }
         create() {
@@ -2813,13 +3163,14 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this.game.data.set('sessionID', PIXI__namespace.utils.uid());
             this.game.data.set('started', false);
             this.game.data.set('state', 'deal');
-            this.game.data.set('balance', 1000);
+            this.game.data.set('balance', 10);
+            this.game.data.set('reserved', 0);
             this.game.data.set('bet', 0);
             this.game.data.set('chips', []);
             this.game.data.set('deck', []);
+            this.game.data.set('revealed', false);
             this.game.data.set('dealer', []);
             this.game.data.set('player', []);
-            this.game.data.set('ace', 'both');
             this.game.data.set('options.music', true);
             this.game.data.set('options.sound', true);
             this.game.data.set('statistic.win', 0);
@@ -2828,8 +3179,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this.game.data.set('statistic.history', []);
             this.game.data.set('statistic.total.win', 0);
             this.game.data.set('statistic.total.lost', 0);
-            this.game.data.set('statistic.total.bet', 0);
-            this.game.data.writeLocal();
+            this.game.data.save();
         }
         checkButtons() {
             const isStarted = this.game.data.get('started', false);
@@ -2841,11 +3191,14 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this._startButton.disabled();
         }
         onWokeUp() {
+            if (!this.game.data.hasLocalRecord()) {
+                this.resetSession();
+            }
             this._startButton.enabled();
             this.checkButtons();
         }
         onStartClick() {
-            this.game.data.set('started', true).writeLocal();
+            this.game.data.set('started', true).save();
             this.game.scene.sleep(this.key);
             this.game.scene.start('GameScene');
         }

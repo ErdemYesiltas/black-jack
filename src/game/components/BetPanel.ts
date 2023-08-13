@@ -9,6 +9,8 @@ export class BetPanel extends PIXI.Container {
     isLocked = false;
     protected _bet = 0;
     protected _betText: PIXI.Text;
+    protected _reserved = 0;
+    protected _reservedText: PIXI.Text;
     protected _chipPool: ObjectPool<SpriteButton>;
     protected _usedChips: ObjectPoolMember<SpriteButton>[] = [];
     protected _mainChips: Record<string, SpriteButton> = {};
@@ -31,12 +33,20 @@ export class BetPanel extends PIXI.Container {
         this._betText = new PIXI.Text('', {
             fontFamily: 'Bungee Regular',
             fill: '#ffffff',
-            fontSize: 16,
-            align: 'center'
+            fontSize: 16
         });
         this._betText.anchor.set(0.5);
         this._betText.position.set(50, 15);
         back.addChild(this._betText);
+
+        this._reservedText = new PIXI.Text('', {
+            fontFamily: 'Bungee Regular',
+            fill: '#31cac6',
+            fontSize: 16
+        });
+        this._reservedText.anchor.set(0.5);
+        this._reservedText.position.set(80, 15);
+        back.addChild(this._reservedText);
 
         const clearBtn = new SpriteButton({
             texture: 'buttons/clean',
@@ -52,7 +62,9 @@ export class BetPanel extends PIXI.Container {
         clearBtn.anchor.set(0.5);
         this.addChild(clearBtn);
         clearBtn.onclick = clearBtn.ontap = () => {
-            this.clear();
+            if (this.isLocked === false) {
+                this.clear();
+            }
         };
 
         this._chipPool = new ObjectPool(this.createChip, this.resetChip, 5);
@@ -84,6 +96,7 @@ export class BetPanel extends PIXI.Container {
     sync(): void {
         // sync bet
         this.bet = this.scene.game.data.get('bet', 0);
+        this.reserved = this.scene.game.data.get('reserved', 0);
 
         // sync chips
         const dbChips = this.scene.game.data.get('chips', []);
@@ -94,7 +107,6 @@ export class BetPanel extends PIXI.Container {
         }
 
         this.checkChips();
-        this.checkBalance();
     }
     reset(): void {
         this.isLocked = false;
@@ -117,10 +129,15 @@ export class BetPanel extends PIXI.Container {
             this.checkChips();
         }
     }
+    reserve(): void {
+        if (this.isLocked === false) {
+            this.reserved = this.bet;
+            this.clear();
+        }
+    }
     protected onBalanceChange(key: string): void {
         if (key === 'balance') {
             this.checkChips();
-            this.checkBalance();
         }
     }
     protected checkChips(): void {
@@ -137,12 +154,6 @@ export class BetPanel extends PIXI.Container {
             }
         }
     }
-    protected checkBalance(): void {
-        const balance = this.scene.game.data.get('balance', 0);
-        if (balance < this.bet) {
-            this.clear();
-        }
-    }
     protected increase(chip: number): void {
         if (this.isLocked === false) {
             const keys = Object.keys(this._chips);
@@ -154,7 +165,7 @@ export class BetPanel extends PIXI.Container {
                     this.checkChips();
                     const dbChips = this.scene.game.data.get('chips', []);
                     dbChips.push(chip);
-                    this.scene.game.data.set('chips', dbChips).writeLocal();
+                    this.scene.game.data.set('chips', dbChips).save();
 
                     this.playIncreaseChipAnim(chip);
                 }
@@ -198,7 +209,7 @@ export class BetPanel extends PIXI.Container {
 
                     const dbChips: number[] = this.scene.game.data.get('chips', []);
                     dbChips.splice(dbChips.lastIndexOf(chip), 1);
-                    this.scene.game.data.set('chips', dbChips).writeLocal();
+                    this.scene.game.data.set('chips', dbChips).save();
 
                     this.playDecreaseAnim(usedIndex);
                 }
@@ -257,7 +268,18 @@ export class BetPanel extends PIXI.Container {
     set bet(value: number) {
         this._bet = value;
         this.scene.game.data.set('bet', value);
-        this.scene.game.data.writeLocal();
+        this.scene.game.data.save();
         this._betText.text = `${this._bet.toString()} €`;
+    }
+    get reserved(): number {
+        return this._bet;
+    }
+    set reserved(value: number) {
+        this._reserved = value;
+        this.scene.game.data.set('reserved', value);
+        this.scene.game.data;
+        this._reservedText.text = `${this._reserved.toString()} €`;
+        this._reservedText.visible = value > 0;
+        this._betText.x = value > 0 ? 20 : 50;
     }
 }

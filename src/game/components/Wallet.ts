@@ -9,7 +9,9 @@ export class Wallet extends PIXI.Container {
     isLocked = false;
     protected _total = 0;
     protected _totalText: PIXI.Text;
+    protected _amountText: PIXI.Text;
     protected _valueTween: TWEEN.Tween<any>;
+    protected _amountTween: TWEEN.Tween<any>;
     protected _coinAnimPool: ObjectPool<PIXI.AnimatedSprite>;
 
     constructor(scene: Scene) {
@@ -47,6 +49,16 @@ export class Wallet extends PIXI.Container {
         this._totalText.position.set(40, 5);
         this.addChild(this._totalText);
 
+        // total text
+        this._amountText = new PIXI.Text('', {
+            fontFamily: 'Bungee Regular',
+            fill: '#ffffff',
+            fontSize: 16,
+            align: 'right'
+        });
+        this._amountText.position.set(150, 5);
+        this.addChild(this._amountText);
+
         this.sync();
     }
     sync(): void {
@@ -56,13 +68,23 @@ export class Wallet extends PIXI.Container {
         this._totalText.text = `${this._total} €`;
     }
     reset(): void {
+        this.resetTweens();
+
+        this._total = 0;
+        this._totalText.text = `${this._total} €`;
+    }
+    protected resetTweens(): void {
         if (this._valueTween && this._valueTween.isPlaying) {
             this._valueTween.end();
             this.scene.tween.remove(this._valueTween);
         }
 
-        this._total = 0;
-        this._totalText.text = `${this._total} €`;
+        if (this._amountTween && this._amountTween.isPlaying) {
+            this._amountTween.end();
+            this.scene.tween.remove(this._amountTween);
+        }
+
+        this._amountText.text = '';
     }
     protected createCoinAnim(): PIXI.AnimatedSprite {
         const coinTextures = [
@@ -94,39 +116,52 @@ export class Wallet extends PIXI.Container {
                 this.playCoinAnim(value);
             }
             this._total += value;
-            this.scene.game.data.set('balance', this._total).writeLocal();
+            this.scene.game.data.set('balance', this._total).save();
         }
     }
     withdraw(value: number, skipAnim = false): boolean {
         if (this.isLocked || value > this.total) return false;
         this.playAnim(this.total - value, skipAnim);
         this._total -= value;
-        this.scene.game.data.set('balance', this._total).writeLocal();
+        this.scene.game.data.set('balance', this._total).save();
         return true;
     }
-    protected playAnim(value: number, skipAnim = false): void {
-        if (this._valueTween && this._valueTween.isPlaying) {
-            this._valueTween.end();
-            this.scene.tween.remove(this._valueTween);
-        }
+    protected playAnim(totalValue: number, skipAnim = false): void {
+        this.resetTweens();
 
         const counter = { value: this.total };
-        let count = Math.abs(Math.round((value - this.total) / 100));
-        count = Math.min(count, 9);
+        const amount = totalValue - this.total;
+        let count = Math.abs(Math.round(amount / 10));
+        count = Math.min(count, 10);
+
+        this._amountText.style.fill = amount > 0 ? '#ffd700' : '#c00707';
+        this._amountText.text = amount.toString();
 
         this._valueTween = this.scene.tween.add({
             target: counter,
-            to: { value },
+            to: { value: totalValue },
             duration: skipAnim ? 10 : count * 300,
-            onUpdate: (obj) => {
+            delay: 250,
+            onUpdate: (obj: any) => {
                 this._totalText.text = `${Math.round(obj.value).toString()} €`;
+            }
+        });
+
+        this._amountTween = this.scene.tween.add({
+            target: { value: amount },
+            to: { value: 0 },
+            duration: skipAnim ? 10 : count * 300,
+            delay: 250,
+            onUpdate: (obj: any) => {
+                this._amountText.text = `${Math.round(obj.value).toString()}`;
             },
-            start: true
+            onComplete: () => {
+                this._amountText.text = '';
+            }
         });
     }
     protected playCoinAnim(value: number): void {
-        let coinCount = Math.round(value / 100);
-        coinCount = Math.min(coinCount, 9);
+        const coinCount = Math.min(value, 20);
 
         for (let i = 0; i < coinCount; i++) {
             const randomX = RandomNumber(150, 250);
