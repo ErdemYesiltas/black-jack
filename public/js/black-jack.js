@@ -6653,9 +6653,27 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
         const game = new PIXI__namespace.Application(options);
         const parent = globalThis.document.getElementById('game') || globalThis.document.body;
         parent.appendChild(game.view);
-        if (options.debug === true) {
-            globalThis.__PIXI_APP__ = game;
-            globalThis.game = game;
+        globalThis.__PIXI_APP__ = game;
+        globalThis.game = game;
+        globalThis.document.body.addEventListener('click', () => {
+            if (document.body.requestFullscreen) {
+                document.body.requestFullscreen();
+            }
+            else if (document.body.webkitRequestFullscreen) { /* Safari */
+                document.body.webkitRequestFullscreen();
+            }
+            else if (document.body.msRequestFullscreen) { /* IE11 */
+                document.body.msRequestFullscreen();
+            }
+        });
+        globalThis.addEventListener('blur', () => {
+            game.sound.mute(true);
+        });
+        globalThis.addEventListener('focus', () => {
+            game.sound.mute(false);
+        });
+        if (PIXI__namespace.utils.isMobile.phone) {
+            globalThis.screen.orientation.lock('portrait-primary');
         }
     }
 
@@ -6667,7 +6685,6 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
     });
 
     window.onload = () => {
-        //window.screen.orientation.lock('portrait-primary');
         PIXI__namespace.Assets.load({ src: 'misc/game.json', loadParser: 'loadJson' }).then((file) => {
             Init(file);
         });
