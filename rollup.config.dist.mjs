@@ -6,7 +6,8 @@ import typescript from '@rollup/plugin-typescript';
 export default {
     external: [
         'pixi.js',
-        'pixi-spine'
+        'pixi-spine',
+        '@tweenjs/tween.js'
     ],
     input: [
         './src/index.ts'
@@ -18,7 +19,8 @@ export default {
         sourcemap: false,
         globals: {
             'pixi.js': 'PIXI',
-            'pixi-spine': 'PIXI.spine'
+            'pixi-spine': 'PIXI.spine',
+            '@tweenjs/tween.js': 'TWEEN'
         }
     },
     plugins: [

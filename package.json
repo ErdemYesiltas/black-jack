@@ -19,8 +19,7 @@
     "@tweenjs/tween.js": "^21.0.0",
     "howler": "^2.2.3",
     "pixi-spine": "^4.0.4",
-    "pixi.js": "^7.2.4",
-    "screenfull": "^6.0.2"
+    "pixi.js": "^7.2.4"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.3",

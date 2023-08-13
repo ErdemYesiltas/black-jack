@@ -1,18 +1,10 @@
-import * as PIXI from 'pixi.js';
 import { Scene } from '../../engine/scene';
 import { SpriteButton } from '../components';
 import { Howl } from 'howler';
-import screenfull from 'screenfull';
 
 export class BackgroundScene extends Scene {
     protected _muteButton: SpriteButton;
     protected _music: Howl;
-    init(): void {
-        // full screen
-        if (PIXI.utils.isMobile.phone && screenfull.isEnabled) {
-            screenfull.request();
-        }
-    }
     create(): void {
         const music = this.game.data.get('music', false);
 
@@ -23,6 +15,8 @@ export class BackgroundScene extends Scene {
         if (music === true) {
             this.game.sound.get('main-music').play();
         }
+
+        this._muteButton.onclick = this._muteButton.ontap = this.onMuteClick.bind(this);
     }
     // settings click
     protected onMuteClick(): void {
