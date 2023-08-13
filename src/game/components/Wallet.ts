@@ -182,6 +182,7 @@ export class Wallet extends PIXI.Container {
                     this.addChild(anim.data);
                 },
                 onComplete: () => {
+                    this.scene.game.sound.get('coin').play();
                     this.removeChild(anim.data);
                     this._coinAnimPool.release(anim);
                 }

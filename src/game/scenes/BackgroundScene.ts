@@ -1,16 +1,37 @@
 import * as PIXI from 'pixi.js';
 import { Scene } from '../../engine/scene';
+import { SpriteButton } from '../components';
+import { Howl } from 'howler';
+import screenfull from 'screenfull';
 
 export class BackgroundScene extends Scene {
+    protected _muteButton: SpriteButton;
+    protected _music: Howl;
+    init(): void {
+        // full screen
+        if (PIXI.utils.isMobile.phone && screenfull.isEnabled) {
+            screenfull.request();
+        }
+    }
     create(): void {
-        //this.game.scene.sendToBack(this.key);
-        // safe area
-        const safeArea = new PIXI.Graphics();
-        safeArea.name = 'SAFE AREA';
-        safeArea.position.set(415, 60);
+        const music = this.game.data.get('music', false);
 
-        safeArea.beginFill('#000000', .3).lineStyle({ width: 5 }).drawRect(0, 0, 450, 600).endFill();
+        this._music = this.game.sound.get('main-music');
+        this._music.volume(0.5);
+        this._music.loop(true);
 
-        //this.addChild(safeArea);
+        if (music === true) {
+            this.game.sound.get('main-music').play();
+        }
+    }
+    // settings click
+    protected onMuteClick(): void {
+        const music = this.game.data.get('music', false);
+        if (music === true) {
+            this._music.pause();
+        } else {
+            this._music.play();
+        }
+        this.game.data.set('music', !music).save();
     }
 }

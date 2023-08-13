@@ -21,6 +21,8 @@ export class Deck extends PIXI.Container {
     protected _cardPool: ObjectPool<Card>;
     protected _cards: CardOptions[] = [];
     protected _usedCards: ObjectPoolMember<Card>[] = [];
+    protected _cardBelow: PIXI.Sprite;
+    protected _cardAbove: PIXI.Sprite;
 
     constructor(scene: Scene, options: DeckOptions) {
         super();
@@ -63,6 +65,22 @@ export class Deck extends PIXI.Container {
                 this._cards.push({ back: defaultBack, ...cardTexture, type, subType, owner: null });
             });
         });
+
+        // shuffle card below
+        this._cardBelow = new PIXI.Sprite(PIXI.Texture.from(defaultBack));
+        this._cardBelow.anchor.set(0.5);
+        this._cardBelow.position.set(100, 60);
+        this._cardBelow.zIndex = 10;
+        this._cardBelow.visible = false;
+        this.addChild(this._cardBelow);
+
+        // shuffle card above
+        this._cardAbove = new PIXI.Sprite(PIXI.Texture.from(defaultBack));
+        this._cardAbove.anchor.set(0.5);
+        this._cardAbove.position.set(100, 60);
+        this._cardAbove.zIndex = 20;
+        this._cardAbove.visible = false;
+        this.addChild(this._cardAbove);
 
         this.sync();
     }
@@ -113,9 +131,104 @@ export class Deck extends PIXI.Container {
         this.isLocked = false;
         this.relase(true);
     }
-    shuffle(): void {
+    shuffle(playAnim = false, callback: () => void = null, context: any = null): void {
         this.copies = [...this._cards];
         this.scene.game.data.set('deck', [...this.copies]).save();
+
+        if (playAnim) {
+            this.playShuffleAnim(callback, context);
+        } else if (callback) {
+            callback.call(context);
+        }
+    }
+    protected playShuffleAnim(callback: () => void = null, context: any = null): void {
+        // card above
+        this.scene.tween.add({
+            target: this._cardAbove,
+            to: { x: 170 },
+            duration: 300,
+            yoyo: true,
+            repeat: 9,
+            easing: TWEEN.Easing.generatePow(2).Out,
+            onStart: () => {
+                this._cardAbove.visible = true;
+            },
+            onRepeat: () => {
+                this._cardAbove.zIndex = this._cardAbove.zIndex === 20 ? 10 : 20;
+                this.sortableChildren = true;
+            },
+            onComplete: () => {
+                this.scene.tween.add({
+                    target: this._cardAbove,
+                    to: { angle: -30 },
+                    duration: 300,
+                    delay: 150,
+                    onComplete: () => {
+                        this.scene.tween.add({
+                            target: this._cardAbove,
+                            to: { x: 295, y: -80, alpha: 0, scale: { x: 0.5, y: 0.5 } },
+                            duration: 1000,
+                            delay: 250,
+                            easing: TWEEN.Easing.generatePow(2).Out,
+                            onComplete: () => {
+                                this._cardAbove.position.set(100, 60);
+                                this._cardAbove.angle = 0;
+                                this._cardAbove.alpha = 1;
+                                this._cardAbove.scale.set(1);
+                                this._cardAbove.zIndex = 20;
+                                this._cardAbove.visible = false;
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+        // card below
+        this.scene.tween.add({
+            target: this._cardBelow,
+            to: { x: 30 },
+            duration: 300,
+            yoyo: true,
+            repeat: 9,
+            easing: TWEEN.Easing.generatePow(2).Out,
+            onStart: () => {
+                this._cardBelow.visible = true;
+            },
+            onRepeat: () => {
+                this._cardBelow.zIndex = this._cardBelow.zIndex === 20 ? 10 : 20;
+                this.sortableChildren = true;
+            },
+            onComplete: () => {
+                this.scene.tween.add({
+                    target: this._cardBelow,
+                    to: { angle: -30 },
+                    duration: 300,
+                    delay: 300,
+                    onComplete: () => {
+                        this.scene.tween.add({
+                            target: this._cardBelow,
+                            to: { x: 295, y: -80, alpha: 0, scale: { x: 0.5, y: 0.5 } },
+                            duration: 1000,
+                            delay: 250,
+                            easing: TWEEN.Easing.generatePow(2).Out,
+                            onComplete: () => {
+                                this._cardBelow.position.set(100, 60);
+                                this._cardBelow.angle = 0;
+                                this._cardBelow.alpha = 1;
+                                this._cardBelow.scale.set(1);
+                                this._cardBelow.zIndex = 10;
+                                this._cardBelow.visible = false;
+                                this.sortableChildren = true;
+                                if (callback) {
+                                    callback.call(context);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
     initial(callback: () => void = null, context: any = null): void {
         if (this.isLocked === false) {
@@ -181,6 +294,9 @@ export class Deck extends PIXI.Container {
                     to: { x: 0, y: 0, angle, alpha },
                     delay: 250 * (i + 1),
                     duration: 300,
+                    onStart: () => {
+                        this.scene.game.sound.get('card-pick').play();
+                    },
                     onComplete: (obj: any) => {
                         const container = obj.owner === 'dealer' ? this._dCardsC : this._pCardsC;
                         const children = [...container.children];

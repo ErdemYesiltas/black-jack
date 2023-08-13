@@ -2,7 +2,7 @@
   "meta": {
     "version": "0.6.7"
   },
-  "savePath": "C:\\Users\\Erdem\\OneDrive\\Masaüstü\\Blackjack\\assets\\exports\\high",
+  "savePath": "C:\\Users\\Erdem\\OneDrive\\Masaüstü\\Blackjack\\assets\\exports",
   "images": [
     {
       "name": "deck.png",
@@ -33,7 +33,7 @@
     "filter": "none",
     "exporter": "JSON (hash)",
     "fileName": "pack-result",
-    "savePath": "C:\\Users\\Erdem\\OneDrive\\Masaüstü\\Blackjack\\assets\\exports\\high",
+    "savePath": "C:\\Users\\Erdem\\OneDrive\\Masaüstü\\Blackjack\\assets\\exports",
     "width": 2048,
     "height": 2048,
     "fixedSize": false,

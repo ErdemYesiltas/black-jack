@@ -63,6 +63,7 @@ export class BetPanel extends PIXI.Container {
         this.addChild(clearBtn);
         clearBtn.onclick = clearBtn.ontap = () => {
             if (this.isLocked === false) {
+                this.scene.game.sound.get('button').play();
                 this.clear();
             }
         };
@@ -191,6 +192,7 @@ export class BetPanel extends PIXI.Container {
             duration: skipAnim ? 10 : 300,
             easing: TWEEN.Easing.generatePow(3).Out,
             onStart: (target: any) => {
+                this.scene.game.sound.get('chip').play();
                 (target as SpriteButton).eventMode = 'none'
             },
             onComplete: (target: any) => {
@@ -229,6 +231,7 @@ export class BetPanel extends PIXI.Container {
                 duration: skipAnim ? 10 : 300,
                 easing: TWEEN.Easing.generatePow(3).In,
                 onStart: (target: any) => {
+                    this.scene.game.sound.get('chip').play();
                     (target as SpriteButton).eventMode = 'none'
                 },
                 onComplete: () => {
@@ -272,7 +275,7 @@ export class BetPanel extends PIXI.Container {
         this._betText.text = `${this._bet.toString()} €`;
     }
     get reserved(): number {
-        return this._bet;
+        return this._reserved;
     }
     set reserved(value: number) {
         this._reserved = value;

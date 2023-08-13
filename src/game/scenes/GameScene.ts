@@ -153,6 +153,7 @@ export class GameScene extends Scene {
         });
         deposit1000.position.set(-88, -22);
         depositBtn.onclick = depositBtn.ontap = () => {
+            this.game.sound.get('button').play();
             this._wallet.deposit(1000);
             this.setState('deal');
             this.closePopup();
@@ -180,6 +181,7 @@ export class GameScene extends Scene {
         });
         resetText.position.set(-88, -22);
         resetBtn.onclick = resetBtn.ontap = () => {
+            this.game.sound.get('button').play();
             this.closePopup();
             this.game.data.clear(true);
             this.game.scene.start('MenuScene');
@@ -208,6 +210,7 @@ export class GameScene extends Scene {
         });
         cancelText.position.set(-88, -22);
         cancelBtn.onclick = cancelBtn.ontap = () => {
+            this.game.sound.get('button').play();
             this.closePopup();
         };
         cancelBtn.addChild(cancelText);
@@ -364,8 +367,14 @@ export class GameScene extends Scene {
             easing: TWEEN.Easing.Back.Out,
             onStart: () => {
                 if (result === 'win' || result === 'blackjack' || result === 'push') {
-                    console.log(this._betP.bet, this._betP.reserved, (result === 'win' ? 2 : result === 'blackjack' ? 3 : 1));
-                    this._wallet.deposit((this._betP.bet + this._betP.reserved) * (result === 'win' ? 2 : result === 'blackjack' ? 3 : 1));
+                    this.game.sound.get('win').play();
+                    if (result === 'blackjack') this.game.sound.get('blackjack').play();
+                    const multiplier = (result === 'win' ? 2 : result === 'blackjack' ? 3 : 1);
+                    const totalBet = this._betP.bet + this._betP.reserved;
+                    console.log(totalBet, multiplier);
+                    this._wallet.deposit(totalBet * multiplier);
+                } else {
+                    this.game.sound.get('lose').play();
                 }
 
                 this._betP.isLocked = false;
@@ -397,13 +406,9 @@ export class GameScene extends Scene {
             }
         });
     }
-    protected playShuffle(callback: () => void = null, context: any = null): void {
-        if (callback) {
-            callback.call(context);
-        }
-    }
     // on click deal button
     protected onDeal(): void {
+        this.game.sound.get('button').play();
         if (this._wallet.total > 0 && this._wallet.total >= this._betP.bet) {
             if (this._betP.bet > 0 && this._wallet.withdraw(this._betP.bet)) {
 
@@ -414,8 +419,7 @@ export class GameScene extends Scene {
                 this._dealButton.disabled();
 
                 if (this._deck.copies.length <= 26) {
-                    this._deck.shuffle();
-                    this.playShuffle(this.playInitialCards, this);
+                    this._deck.shuffle(true, this.playInitialCards, this);
                 } else {
                     this.playInitialCards();
                 }
@@ -428,10 +432,12 @@ export class GameScene extends Scene {
     }
     // on click hit button
     protected onHit(): void {
+        this.game.sound.get('button').play();
         this._deck.hit(1, 'player', true, this.checkCards, this);
     }
     // on click stand button
     protected onStand(): void {
+        this.game.sound.get('button').play();
         const pScore = this._pScores.filter(p => p <= 21);
         this._pScores = [Math.max(...pScore)];
         this.checkAdditionBet();
@@ -449,7 +455,6 @@ export class GameScene extends Scene {
                     this._deck.isLocked = false;
 
                     // reset components
-                    console.log('deal');
                     this._betP.clear();
                     this._deck.relase();
 
@@ -507,6 +512,7 @@ export class GameScene extends Scene {
     }
     // home button click
     protected onHomeClick(): void {
+        this.game.sound.get('button').play();
         this.game.scene.sleep(this.key);
         this.game.scene.start('MenuScene');
     }

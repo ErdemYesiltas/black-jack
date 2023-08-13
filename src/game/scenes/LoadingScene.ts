@@ -25,7 +25,19 @@ export class LoadingScene extends Scene {
             .moveTo(0, 0)
             .lineTo(config.shape.width * progress, 0);
     }
+    registerSounds(): void {
+        this.game.sound.add('blackjack', { src: 'sounds/blackjack.webm' });
+        this.game.sound.add('button', { src: 'sounds/button.webm' });
+        this.game.sound.add('card-pick', { src: 'sounds/card-pick.webm' });
+        this.game.sound.add('chip', { src: 'sounds/chip.webm' });
+        this.game.sound.add('coin', { src: 'sounds/coin.webm' });
+        this.game.sound.add('main-music', { src: 'sounds/main-music.webm' });
+        this.game.sound.add('win', { src: 'sounds/win.webm' });
+        this.game.sound.add('lose', { src: 'sounds/lose.webm' });
+    }
     onAssetLoadComplete(): void {
+
+        this.registerSounds();
         // start inital scenes
         this.game.scene.start('BackgroundScene');
         this.game.scene.start('MenuScene');

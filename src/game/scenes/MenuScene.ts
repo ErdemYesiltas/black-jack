@@ -20,11 +20,12 @@ export class MenuScene extends Scene {
         this.checkButtons();
     }
     protected resetSession(): void {
+        const music = this.game.data.get('music', true);
         // initial values
         this.game.data.set('sessionID', PIXI.utils.uid());
         this.game.data.set('started', false);
         this.game.data.set('state', 'deal');
-        this.game.data.set('balance', 10);
+        this.game.data.set('balance', 1000);
         this.game.data.set('reserved', 0);
         this.game.data.set('bet', 0);
         this.game.data.set('chips', []);
@@ -32,8 +33,7 @@ export class MenuScene extends Scene {
         this.game.data.set('revealed', false);
         this.game.data.set('dealer', []);
         this.game.data.set('player', []);
-        this.game.data.set('options.music', true);
-        this.game.data.set('options.sound', true);
+        this.game.data.set('music', music);
         this.game.data.set('statistic.win', 0);
         this.game.data.set('statistic.lost', 0);
         this.game.data.set('statistic.draw', 0);
@@ -59,11 +59,13 @@ export class MenuScene extends Scene {
         this.checkButtons();
     }
     protected onStartClick(): void {
+        this.game.sound.get('button').play();
         this.game.data.set('started', true).save();
         this.game.scene.sleep(this.key);
         this.game.scene.start('GameScene');
     }
     protected onResetClick(): void {
+        this.game.sound.get('button').play();
         this.resetSession();
         this.checkButtons();
     }
