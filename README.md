@@ -37,17 +37,17 @@ Please click [here](https://main.d2qlrdceyfu3l.amplifyapp.com/) for demo game.
 
 ## How to play?
 
-* Eğer oyunu ilk kez oynuyorsanız sizi bu ekran karşılayacaktır. Start butonuna basarak yeni bir session yaratıp oyunu başlatabilirsiniz.
+* If you are playing the game for the first time you will be greeted by this screen. You can start a new session to start the game by clicking on the Start button.
 
 ![1692005940979](image/README/1692005940979.png)
 
-* Eğer daha önceden kayıtlı bir oyun sessionınız varsa sizi aşağıdaki ekran karşılayacaktır. Resume butonuna basarak oyununuza en son kaldığınız yerden devam edebilirsiniz. Reset butonuna basarak sıfırdan yeni bir oyun başlatabilirsiniz.
+* If you already had a saved game session you will be greeted by the screen below. You can continue the game from where you left off by clicking on Resume button. You can also start a new game session using the Reset button.
 
 ![1692006208905](image/README/1692006208905.png)
 
 * Enjoy your game !
 
   ![1692006292170](image/README/1692006292170.png)
-* Eğer paranız biterse aşağıdaki gibi bir popup ekranı gelecektir. Buradan para yükleyebilir, sessionınızı resetleyebilir ya da oyun ekranına geri dönebilirsiniz.
+* If you run out of credit you will encounter a popup as shown below. Here you can deposit, reset your session or return the game scene.
 
   ![1692006366438](image/README/1692006366438.png)
