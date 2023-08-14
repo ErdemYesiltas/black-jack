@@ -33,7 +33,7 @@ export class BetPanel extends PIXI.Container {
         this._betText = new PIXI.Text('', {
             fontFamily: 'Bungee Regular',
             fill: '#ffffff',
-            fontSize: 16
+            fontSize: 10
         });
         this._betText.anchor.set(0.5);
         this._betText.position.set(50, 15);
@@ -42,10 +42,10 @@ export class BetPanel extends PIXI.Container {
         this._reservedText = new PIXI.Text('', {
             fontFamily: 'Bungee Regular',
             fill: '#31cac6',
-            fontSize: 16
+            fontSize: 10
         });
         this._reservedText.anchor.set(0.5);
-        this._reservedText.position.set(80, 15);
+        this._reservedText.position.set(70, 15);
         back.addChild(this._reservedText);
 
         const clearBtn = new SpriteButton({
@@ -283,6 +283,6 @@ export class BetPanel extends PIXI.Container {
         this.scene.game.data;
         this._reservedText.text = `${this._reserved.toString()} €`;
         this._reservedText.visible = value > 0;
-        this._betText.x = value > 0 ? 20 : 50;
+        this._betText.x = value > 0 ? 30 : 50;
     }
 }

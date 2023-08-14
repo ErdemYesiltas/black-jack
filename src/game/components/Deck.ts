@@ -232,19 +232,17 @@ export class Deck extends PIXI.Container {
     }
     initial(callback: () => void = null, context: any = null): void {
         if (this.isLocked === false) {
-            this.hit(1, 'dealer', true, () => {
-                this.hit(1, 'player', true, () => {
-                    this.hit(1, 'dealer', false, () => {
-                        this.hit(1, 'player', true, callback, context);
-                    }, this);
-                }, this);
-            }, this);
+            this.hit(1, 'dealer', true);
+            this.hit(1, 'dealer', false, 500);
+            this.hit(1, 'player', true, 750);
+            this.hit(1, 'player', true, 1000, callback, context);
         }
     }
     hit(
         count = 1,
         type: 'dealer' | 'player',
         isOpened = true,
+        delay = 250,
         callback: () => void = null,
         context: any = null
     ): ObjectPoolMember<Card>[] {
@@ -292,7 +290,7 @@ export class Deck extends PIXI.Container {
                 this.scene.tween.add({
                     target: card.data,
                     to: { x: 0, y: 0, angle, alpha },
-                    delay: 250 * (i + 1),
+                    delay: delay * (i + 1),
                     duration: 300,
                     onStart: () => {
                         this.scene.game.sound.get('card-pick').play();

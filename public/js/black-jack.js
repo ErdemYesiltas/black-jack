@@ -5208,7 +5208,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this._betText = new PIXI__namespace.Text('', {
                 fontFamily: 'Bungee Regular',
                 fill: '#ffffff',
-                fontSize: 16
+                fontSize: 10
             });
             this._betText.anchor.set(0.5);
             this._betText.position.set(50, 15);
@@ -5216,10 +5216,10 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this._reservedText = new PIXI__namespace.Text('', {
                 fontFamily: 'Bungee Regular',
                 fill: '#31cac6',
-                fontSize: 16
+                fontSize: 10
             });
             this._reservedText.anchor.set(0.5);
-            this._reservedText.position.set(80, 15);
+            this._reservedText.position.set(70, 15);
             back.addChild(this._reservedText);
             const clearBtn = new SpriteButton({
                 texture: 'buttons/clean',
@@ -5442,7 +5442,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this.scene.game.data;
             this._reservedText.text = `${this._reserved.toString()} €`;
             this._reservedText.visible = value > 0;
-            this._betText.x = value > 0 ? 20 : 50;
+            this._betText.x = value > 0 ? 30 : 50;
         }
     }
 
@@ -5713,16 +5713,13 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
         }
         initial(callback = null, context = null) {
             if (this.isLocked === false) {
-                this.hit(1, 'dealer', true, () => {
-                    this.hit(1, 'player', true, () => {
-                        this.hit(1, 'dealer', false, () => {
-                            this.hit(1, 'player', true, callback, context);
-                        }, this);
-                    }, this);
-                }, this);
+                this.hit(1, 'dealer', true);
+                this.hit(1, 'dealer', false, 500);
+                this.hit(1, 'player', true, 750);
+                this.hit(1, 'player', true, 1000, callback, context);
             }
         }
-        hit(count = 1, type, isOpened = true, callback = null, context = null) {
+        hit(count = 1, type, isOpened = true, delay = 250, callback = null, context = null) {
             if (this.isLocked === false) {
                 const cards = [];
                 const cardTypes = ['clubs', 'spades', 'diamonds', 'hearts'];
@@ -5762,7 +5759,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                     this.scene.tween.add({
                         target: card.data,
                         to: { x: 0, y: 0, angle, alpha },
-                        delay: 250 * (i + 1),
+                        delay: delay * (i + 1),
                         duration: 300,
                         onStart: () => {
                             this.scene.game.sound.get('card-pick').play();
@@ -6334,9 +6331,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                 this.checkCards();
             }
             else {
-                //setTimeout(() => {
-                this._deck.hit(1, 'dealer', true, this.checkCards, this);
-                //}, 500);
+                this._deck.hit(1, 'dealer', true, 250, this.checkCards, this);
             }
         }
         decideNextMove() {
@@ -6358,10 +6353,12 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             }
         }
         playInitialCards() {
-            this._deck.initial(() => {
-                this.setState('hit');
-                this.checkCards();
-            }, this);
+            setTimeout(() => {
+                this._deck.initial(() => {
+                    this.setState('hit');
+                    this.checkCards();
+                }, this);
+            }, 500);
         }
         playResult(result) {
             // result text
@@ -6437,7 +6434,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
         // on click hit button
         onHit() {
             this.game.sound.get('button').play();
-            this._deck.hit(1, 'player', true, this.checkCards, this);
+            this._deck.hit(1, 'player', true, 250, this.checkCards, this);
         }
         // on click stand button
         onStand() {

@@ -326,9 +326,7 @@ export class GameScene extends Scene {
             this.game.data.set('dealer', dCards);
             this.checkCards();
         } else {
-            //setTimeout(() => {
-            this._deck.hit(1, 'dealer', true, this.checkCards, this);
-            //}, 500);
+            this._deck.hit(1, 'dealer', true, 250, this.checkCards, this);
         }
     }
     protected decideNextMove(): void {
@@ -352,10 +350,12 @@ export class GameScene extends Scene {
         }
     }
     protected playInitialCards(): void {
-        this._deck.initial(() => {
-            this.setState('hit');
-            this.checkCards();
-        }, this);
+        setTimeout(() => {
+            this._deck.initial(() => {
+                this.setState('hit');
+                this.checkCards();
+            }, this);
+        }, 500);
     }
     protected playResult(result: 'win' | 'push' | 'lose' | 'bust' | 'blackjack'): void {
         // result text
@@ -432,7 +432,7 @@ export class GameScene extends Scene {
     // on click hit button
     protected onHit(): void {
         this.game.sound.get('button').play();
-        this._deck.hit(1, 'player', true, this.checkCards, this);
+        this._deck.hit(1, 'player', true, 250, this.checkCards, this);
     }
     // on click stand button
     protected onStand(): void {
