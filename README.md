@@ -31,6 +31,10 @@
 
 * Open your browser and type [http://localhost:3000](http://localhost:3000) or [http://localhost:3000/dev.html](http://localhost:3000/dev.html) for development
 
+## Demo link
+
+Please click [here](https://main.d2qlrdceyfu3l.amplifyapp.com/) for demo game.
+
 ## How to play?
 
 * Eğer oyunu ilk kez oynuyorsanız sizi bu ekran karşılayacaktır. Start butonuna basarak yeni bir session yaratıp oyunu başlatabilirsiniz.
