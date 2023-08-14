@@ -26,14 +26,14 @@ export class LoadingScene extends Scene {
             .lineTo(config.shape.width * progress, 0);
     }
     registerSounds(): void {
-        this.game.sound.add('blackjack', { src: ['sounds/blackjack.webm', 'sounds/blackjack.ogg'] });
-        this.game.sound.add('button', { src: ['sounds/button.webm', 'sounds/button.ogg'] });
-        this.game.sound.add('card-pick', { src: ['sounds/card-pick.webm', 'sounds/card-pick.ogg'] });
-        this.game.sound.add('chip', { src: ['sounds/chip.webm', 'sounds/chip.ogg'] });
-        this.game.sound.add('coin', { src: ['sounds/coin.webm', 'sounds/coin.ogg'] });
-        this.game.sound.add('main-music', { src: ['sounds/main-music.webm', 'sounds/main-music.ogg'] });
-        this.game.sound.add('win', { src: ['sounds/win.webm', 'sounds/win.ogg'] });
-        this.game.sound.add('lose', { src: ['sounds/lose.webm', 'sounds/lose.ogg'] });
+        this.game.sound.add('blackjack', { src: ['sounds/blackjack.ogg', 'sounds/blackjack.webm'] });
+        this.game.sound.add('button', { src: ['sounds/button.ogg', 'sounds/button.webm'] });
+        this.game.sound.add('card-pick', { src: ['sounds/card-pick.ogg', 'sounds/card-pick.webm'] });
+        this.game.sound.add('chip', { src: ['sounds/chip.ogg', 'sounds/chip.webm'] });
+        this.game.sound.add('coin', { src: ['sounds/coin.ogg', 'sounds/coin.webm'] });
+        this.game.sound.add('main-music', { src: ['sounds/main-music.ogg', 'sounds/main-music.webm'] });
+        this.game.sound.add('win', { src: ['sounds/win.ogg', 'sounds/win.webm'] });
+        this.game.sound.add('lose', { src: ['sounds/lose.ogg', 'sounds/lose.webm'] });
     }
     onAssetLoadComplete(): void {
 
