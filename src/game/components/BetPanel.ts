@@ -113,16 +113,16 @@ export class BetPanel extends PIXI.Container {
         this.isLocked = false;
         this.clear(true);
     }
-    clear(hard = false): void {
+    clear(hard = false, direction: 'up' | 'down' = 'down'): void {
         if (this.isLocked === false) {
             const len = this._usedChips.length - 1;
             for (let i = len; i >= 0; i--) {
                 if (hard) {
-                    this.playDecreaseAnim(i, true, 0);
+                    this.playDecreaseAnim(i, true, 0, direction);
                 } else if ((len - i) <= 5) {
-                    this.playDecreaseAnim(i, false, 100 * (len - i));
+                    this.playDecreaseAnim(i, false, 100 * (len - i), direction);
                 } else {
-                    this.playDecreaseAnim(i, true, 0);
+                    this.playDecreaseAnim(i, true, 0, direction);
                 }
             }
             this.scene.game.data.set('chips', []);
@@ -133,7 +133,7 @@ export class BetPanel extends PIXI.Container {
     reserve(): void {
         if (this.isLocked === false) {
             this.reserved = this.bet;
-            this.clear();
+            this.clear(false, 'up');
         }
     }
     protected onBalanceChange(key: string): void {
@@ -218,7 +218,7 @@ export class BetPanel extends PIXI.Container {
             }
         }
     }
-    protected playDecreaseAnim(usedIndex: number, skipAnim = false, delay = 0): void {
+    protected playDecreaseAnim(usedIndex: number, skipAnim = false, delay = 0, direction: 'up' | 'down' = 'down'): void {
         // get new chip from pool
         const chipMember = this._usedChips[usedIndex];
 
@@ -226,7 +226,7 @@ export class BetPanel extends PIXI.Container {
             this._usedChips.splice(usedIndex, 1);
             this.scene.tween.add({
                 target: chipMember.data,
-                to: { y: 150 },
+                to: { y: direction === 'down' ? 150 : -300 },
                 delay,
                 duration: skipAnim ? 10 : 300,
                 easing: TWEEN.Easing.generatePow(3).In,

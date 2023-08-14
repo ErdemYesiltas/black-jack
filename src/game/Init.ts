@@ -17,7 +17,15 @@ export default function Init(options?: PIXI.IApplicationOptions): void {
         } else if (document.body.msRequestFullscreen) { /* IE11 */
             document.body.msRequestFullscreen();
         }
+
+        if (PIXI.utils.isMobile.phone) {
+            globalThis.screen.orientation.lock('portrait-primary');
+        }
     });
+
+    if (PIXI.utils.isMobile.phone) {
+        globalThis.screen.orientation.lock('portrait-primary');
+    }
     globalThis.addEventListener('blur', () => {
         game.sound.mute(true);
     });
@@ -25,7 +33,7 @@ export default function Init(options?: PIXI.IApplicationOptions): void {
     globalThis.addEventListener('focus', () => {
         game.sound.mute(false);
     });
-    if (PIXI.utils.isMobile.phone) {
-        globalThis.screen.orientation.lock('portrait-primary');
+    if (!globalThis.document.hasFocus()) {
+        game.sound.mute(true);
     }
 }

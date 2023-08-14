@@ -5,7 +5,7 @@
     "dev": "rollup --config rollup.config.dev.mjs",
     "build": "rollup --config rollup.config.dist.mjs",
     "watch": "rollup --watch --config rollup.config.dev.mjs",
-    "serve": "live-server ./public"
+    "serve": "live-server ./public --port=3000"
   },
   "keywords": [
     "blackjack",

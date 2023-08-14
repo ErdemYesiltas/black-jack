@@ -82,9 +82,9 @@
                 },
                 {
                     "identity": "spritebutton",
-                    "localName": "_muteButton",
-                    "texture": "buttons/settings",
-                    "name": "SETTINGS BUTTON",
+                    "localName": "_musicButton",
+                    "texture": "buttons/music_off",
+                    "name": "MUSIC BUTTON",
                     "x": 445,
                     "y": 128,
                     "anchorX": 0.5,

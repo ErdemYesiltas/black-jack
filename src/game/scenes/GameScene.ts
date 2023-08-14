@@ -371,7 +371,6 @@ export class GameScene extends Scene {
                     if (result === 'blackjack') this.game.sound.get('blackjack').play();
                     const multiplier = (result === 'win' ? 2 : result === 'blackjack' ? 3 : 1);
                     const totalBet = this._betP.bet + this._betP.reserved;
-                    console.log(totalBet, multiplier);
                     this._wallet.deposit(totalBet * multiplier);
                 } else {
                     this.game.sound.get('lose').play();
@@ -380,7 +379,7 @@ export class GameScene extends Scene {
                 this._betP.isLocked = false;
                 this._deck.isLocked = false;
                 this._betP.reserved = 0;
-                this._betP.clear();
+                this._betP.clear(false, 'up');
                 this._deck.relase();
 
                 this._resultText.text = result.toUpperCase();

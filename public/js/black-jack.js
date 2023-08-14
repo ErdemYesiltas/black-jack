@@ -5279,18 +5279,18 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this.isLocked = false;
             this.clear(true);
         }
-        clear(hard = false) {
+        clear(hard = false, direction = 'down') {
             if (this.isLocked === false) {
                 const len = this._usedChips.length - 1;
                 for (let i = len; i >= 0; i--) {
                     if (hard) {
-                        this.playDecreaseAnim(i, true, 0);
+                        this.playDecreaseAnim(i, true, 0, direction);
                     }
                     else if ((len - i) <= 5) {
-                        this.playDecreaseAnim(i, false, 100 * (len - i));
+                        this.playDecreaseAnim(i, false, 100 * (len - i), direction);
                     }
                     else {
-                        this.playDecreaseAnim(i, true, 0);
+                        this.playDecreaseAnim(i, true, 0, direction);
                     }
                 }
                 this.scene.game.data.set('chips', []);
@@ -5301,7 +5301,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
         reserve() {
             if (this.isLocked === false) {
                 this.reserved = this.bet;
-                this.clear();
+                this.clear(false, 'up');
             }
         }
         onBalanceChange(key) {
@@ -5380,14 +5380,14 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                 }
             }
         }
-        playDecreaseAnim(usedIndex, skipAnim = false, delay = 0) {
+        playDecreaseAnim(usedIndex, skipAnim = false, delay = 0, direction = 'down') {
             // get new chip from pool
             const chipMember = this._usedChips[usedIndex];
             if (chipMember) {
                 this._usedChips.splice(usedIndex, 1);
                 this.scene.tween.add({
                     target: chipMember.data,
-                    to: { y: 150 },
+                    to: { y: direction === 'down' ? 150 : -300 },
                     delay,
                     duration: skipAnim ? 10 : 300,
                     easing: TWEEN__namespace.Easing.generatePow(3).In,
@@ -6023,17 +6023,20 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             this._music.loop(true);
             if (music === true) {
                 this.game.sound.get('main-music').play();
+                this._musicButton.texture = PIXI__namespace.Texture.from('buttons/music_on');
             }
-            this._muteButton.onclick = this._muteButton.ontap = this.onMuteClick.bind(this);
+            this._musicButton.onclick = this._musicButton.ontap = this.onMuteClick.bind(this);
         }
         // settings click
         onMuteClick() {
             const music = this.game.data.get('music', false);
             if (music === true) {
                 this._music.pause();
+                this._musicButton.texture = PIXI__namespace.Texture.from('buttons/music_off');
             }
             else {
                 this._music.play();
+                this._musicButton.texture = PIXI__namespace.Texture.from('buttons/music_on');
             }
             this.game.data.set('music', !music).save();
         }
@@ -6375,7 +6378,6 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                             this.game.sound.get('blackjack').play();
                         const multiplier = (result === 'win' ? 2 : result === 'blackjack' ? 3 : 1);
                         const totalBet = this._betP.bet + this._betP.reserved;
-                        console.log(totalBet, multiplier);
                         this._wallet.deposit(totalBet * multiplier);
                     }
                     else {
@@ -6384,7 +6386,7 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                     this._betP.isLocked = false;
                     this._deck.isLocked = false;
                     this._betP.reserved = 0;
-                    this._betP.clear();
+                    this._betP.clear(false, 'up');
                     this._deck.relase();
                     this._resultText.text = result.toUpperCase();
                     this._resultText.visible = true;
@@ -6556,14 +6558,14 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
                 .lineTo(config.shape.width * progress, 0);
         }
         registerSounds() {
-            this.game.sound.add('blackjack', { src: 'sounds/blackjack.webm' });
-            this.game.sound.add('button', { src: 'sounds/button.webm' });
-            this.game.sound.add('card-pick', { src: 'sounds/card-pick.webm' });
-            this.game.sound.add('chip', { src: 'sounds/chip.webm' });
-            this.game.sound.add('coin', { src: 'sounds/coin.webm' });
-            this.game.sound.add('main-music', { src: 'sounds/main-music.webm' });
-            this.game.sound.add('win', { src: 'sounds/win.webm' });
-            this.game.sound.add('lose', { src: 'sounds/lose.webm' });
+            this.game.sound.add('blackjack', { src: ['sounds/blackjack.webm', 'sounds/blackjack.ogg'] });
+            this.game.sound.add('button', { src: ['sounds/button.webm', 'sounds/button.ogg'] });
+            this.game.sound.add('card-pick', { src: ['sounds/card-pick.webm', 'sounds/card-pick.ogg'] });
+            this.game.sound.add('chip', { src: ['sounds/chip.webm', 'sounds/chip.ogg'] });
+            this.game.sound.add('coin', { src: ['sounds/coin.webm', 'sounds/coin.ogg'] });
+            this.game.sound.add('main-music', { src: ['sounds/main-music.webm', 'sounds/main-music.ogg'] });
+            this.game.sound.add('win', { src: ['sounds/win.webm', 'sounds/win.ogg'] });
+            this.game.sound.add('lose', { src: ['sounds/lose.webm', 'sounds/lose.ogg'] });
         }
         onAssetLoadComplete() {
             this.registerSounds();
@@ -6665,15 +6667,21 @@ var App = (function (exports, PIXI, TWEEN, pixiSpine) {
             else if (document.body.msRequestFullscreen) { /* IE11 */
                 document.body.msRequestFullscreen();
             }
+            if (PIXI__namespace.utils.isMobile.phone) {
+                globalThis.screen.orientation.lock('portrait-primary');
+            }
         });
+        if (PIXI__namespace.utils.isMobile.phone) {
+            globalThis.screen.orientation.lock('portrait-primary');
+        }
         globalThis.addEventListener('blur', () => {
             game.sound.mute(true);
         });
         globalThis.addEventListener('focus', () => {
             game.sound.mute(false);
         });
-        if (PIXI__namespace.utils.isMobile.phone) {
-            globalThis.screen.orientation.lock('portrait-primary');
+        if (!globalThis.document.hasFocus()) {
+            game.sound.mute(true);
         }
     }
 
